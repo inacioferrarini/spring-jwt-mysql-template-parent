@@ -22,9 +22,6 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
         super(requiresAuth);
     }
 
-    /**
-     * Called when a secured resource is requested.
-     */
     @Override
     public Authentication attemptAuthentication(
             final HttpServletRequest request,
