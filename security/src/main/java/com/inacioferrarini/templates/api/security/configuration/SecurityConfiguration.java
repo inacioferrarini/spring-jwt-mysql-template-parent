@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.configuration;
+package com.inacioferrarini.templates.api.security.configuration;
 
 import com.inacioferrarini.templates.api.security.filters.TokenAuthenticationFilter;
 import com.inacioferrarini.templates.api.security.providers.TokenAuthenticationProvider;
