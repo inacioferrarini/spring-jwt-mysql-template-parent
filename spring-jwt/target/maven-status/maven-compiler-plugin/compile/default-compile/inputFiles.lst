@@ -2,11 +2,13 @@
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/token/TokenService.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/feature/my/controllers/api/MyController.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/providers/TokenAuthenticationProvider.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/models/dtos/LoginUserRequestDTO.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/user/UserService.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/authentication/UserAuthenticationService.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/RegisterController.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/JwtApplication.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/configuration/SecurityConfiguration.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/models/dtos/RegisterUserRequestDTO.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/LoginController.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/strategies/NoRedirectStrategy.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/models/User.java

@@ -4,6 +4,8 @@ com/inacioferrarini/templates/api/security/controllers/api/LoginController.class
 com/inacioferrarini/templates/api/security/services/authentication/UserAuthenticationService.class
 com/inacioferrarini/templates/api/security/services/token/TokenService.class
 com/inacioferrarini/templates/api/security/providers/TokenAuthenticationProvider.class
+com/inacioferrarini/templates/api/security/models/dtos/LoginUserRequestDTO.class
+com/inacioferrarini/templates/api/security/models/dtos/RegisterUserRequestDTO.class
 com/inacioferrarini/templates/api/security/services/authentication/TokenAuthenticationService.class
 com/inacioferrarini/templates/api/security/services/user/UserServiceImpl$1.class
 com/inacioferrarini/templates/api/feature/my/controllers/api/MyController.class
