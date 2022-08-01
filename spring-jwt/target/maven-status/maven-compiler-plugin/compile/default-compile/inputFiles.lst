@@ -1,6 +1,5 @@
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/user/UserServiceImpl.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/token/TokenService.java
-/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/feature/my/controllers/api/MyController.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/providers/TokenAuthenticationProvider.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/models/dtos/LoginUserRequestDTO.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/spring-jwt/src/main/java/com/inacioferrarini/templates/api/security/services/user/UserService.java

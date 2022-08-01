@@ -8,7 +8,6 @@ com/inacioferrarini/templates/api/security/models/dtos/LoginUserRequestDTO.class
 com/inacioferrarini/templates/api/security/models/dtos/RegisterUserRequestDTO.class
 com/inacioferrarini/templates/api/security/services/authentication/TokenAuthenticationService.class
 com/inacioferrarini/templates/api/security/services/user/UserServiceImpl$1.class
-com/inacioferrarini/templates/api/feature/my/controllers/api/MyController.class
 com/inacioferrarini/templates/api/security/models/User.class
 com/inacioferrarini/templates/api/JwtApplication.class
 com/inacioferrarini/templates/api/security/strategies/NoRedirectStrategy.class
