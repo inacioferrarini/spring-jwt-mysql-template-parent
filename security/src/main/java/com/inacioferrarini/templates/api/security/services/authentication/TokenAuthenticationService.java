@@ -6,6 +6,8 @@ import com.inacioferrarini.templates.api.security.services.token.TokenService;
 import com.inacioferrarini.templates.api.security.services.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class TokenAuthenticationService implements UserAuthenticationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationService.class);
 
     @Autowired
     TokenService tokenService;
@@ -44,7 +48,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<User> findByToken(final String token) {
-        System.out.println("$$$$$$$$$$$$$$$$$$$$ token: " + token);
+        logger.debug("findByToken: {}", token);
         return Optional
                 .of(tokenService.verify(token))
                 .map(map -> map.get("username"))

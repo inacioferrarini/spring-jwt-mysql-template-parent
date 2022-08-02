@@ -1,5 +1,7 @@
 package com.inacioferrarini.templates.api.security.filters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,8 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public final class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
     public TokenAuthenticationFilter(final RequestMatcher requiresAuth) {
         super(requiresAuth);
@@ -48,7 +52,9 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
                 token,
                 token
         );
-        System.out.println("^^^^^^^^ auth: " + auth);
+
+        logger.debug("auth: {}", auth);
+
         return getAuthenticationManager().authenticate(auth);
     }
 

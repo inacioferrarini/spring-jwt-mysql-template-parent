@@ -1,5 +1,5 @@
 # spring-jwt-mysql-template-parent
-An multimodule SpringBoot App with JWT Security and MySQL Database
+A multimodule SpringBoot App with JWT Security and MySQL Database
 
 Provides the basic configuration and code required to secure a RESTful API using a JWT token.
 

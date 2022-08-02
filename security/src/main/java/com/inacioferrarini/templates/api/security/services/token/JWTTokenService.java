@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,15 +19,16 @@ import static java.util.Objects.requireNonNull;
 @Service
 final class JWTTokenService implements Clock, TokenService {
 
+    private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
     private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
 
     String issuer;
     String secretKey;
 
     JWTTokenService() {
-        this.issuer = requireNonNull("infoworld");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!! issuer " + issuer);
-        this.secretKey = BASE64.encode("www.infoworld.com");
+        this.issuer = requireNonNull("inacioferrarini.com");
+        logger.debug("JWT Token Issuer: {}", this.issuer);
+        this.secretKey = BASE64.encode("www.inacioferrarini.com");
     }
 
     private static Map<String, String> parseClaims(final Supplier<Claims> toClaims) {
