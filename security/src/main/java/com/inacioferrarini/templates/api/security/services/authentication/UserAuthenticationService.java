@@ -10,9 +10,7 @@ public interface UserAuthenticationService {
             String username,
             String password
     );
-
     Optional<User> findByToken(String token);
-
     void logout(User user);
 
 }

@@ -27,14 +27,15 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     @Autowired
     TokenService tokenService;
     @Autowired
-    UserService users;
+    UserService userService;
 
     @Override
     public Optional<String> login(
             final String username,
             final String password
     ) {
-        return users
+        // TODO: replace by repository usage
+        return userService
                 .findByUsername(username)
                 .filter(user -> Objects.equals(
                         password,
@@ -48,11 +49,12 @@ final class TokenAuthenticationService implements UserAuthenticationService {
 
     @Override
     public Optional<User> findByToken(final String token) {
+        // TODO: replace by repository usage
         logger.debug("findByToken: {}", token);
         return Optional
                 .of(tokenService.verify(token))
                 .map(map -> map.get("username"))
-                .flatMap(users::findByUsername);
+                .flatMap(userService::findByUsername);
     }
 
     @Override

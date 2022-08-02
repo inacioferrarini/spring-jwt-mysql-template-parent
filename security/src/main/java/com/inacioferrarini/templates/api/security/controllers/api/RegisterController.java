@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterController {
 
     @Autowired
-    UserAuthenticationService authentication;
+    UserAuthenticationService authenticationService;
 
     @Autowired
     UserService users;
@@ -27,13 +27,14 @@ public class RegisterController {
                        .build()
         );
 
-        return authentication.login(
-                                     registerUserRequestDTO.getUsername(),
-                                     registerUserRequestDTO.getPassword()
-                             )
-                             .orElseThrow(
-                                     () -> new RuntimeException("invalid login and/or password")
-                             );
+        return authenticationService
+                .login(
+                        registerUserRequestDTO.getUsername(),
+                        registerUserRequestDTO.getPassword()
+                )
+                .orElseThrow(
+                        () -> new RuntimeException("invalid login and/or password")
+                );
     }
 
 }

@@ -2,7 +2,7 @@ package com.inacioferrarini.templates.api.security.configuration;
 
 import com.inacioferrarini.templates.api.security.filters.TokenAuthenticationFilter;
 import com.inacioferrarini.templates.api.security.providers.TokenAuthenticationProvider;
-import com.inacioferrarini.templates.api.security.strategies.NoRedirectStrategy;
+import com.inacioferrarini.templates.api.security.navigation.NoRedirectStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -35,11 +35,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/public/**")
     );
     private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
+    private TokenAuthenticationProvider tokenAuthenticationProvider;
 
-    TokenAuthenticationProvider provider;
-
-    public SecurityConfiguration(final TokenAuthenticationProvider provider) {
-        this.provider = requireNonNull(provider);
+    public SecurityConfiguration(final TokenAuthenticationProvider tokenAuthenticationProvider) {
+        this.tokenAuthenticationProvider = requireNonNull(tokenAuthenticationProvider);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     PROTECTED_URLS
             )
             .and()
-            .authenticationProvider(provider)
+            .authenticationProvider(tokenAuthenticationProvider)
             .addFilterBefore(
                     restAuthenticationFilter(),
                     AnonymousAuthenticationFilter.class

@@ -26,6 +26,7 @@ final class UserServiceImpl implements UserService {
 
     @Override
     public User save(final User user) {
+        // TODO: replace by repository
         return users.put(
                 user.getId(),
                 user
@@ -34,11 +35,13 @@ final class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> find(final String id) {
+        // TODO: replace by repository
         return ofNullable(users.get(id));
     }
 
     @Override
     public Optional<User> findByUsername(final String username) {
+        // TODO: replace by repository
         return users
                 .values()
                 .stream()

@@ -55,6 +55,8 @@ final class JWTTokenService implements Clock, TokenService {
 
         claims.putAll(attributes);
 
+        // TODO: Store JWT Token in repository
+
         return Jwts.builder()
                    .setClaims(claims)
                    .signWith(

@@ -14,7 +14,7 @@ import java.util.Optional;
 public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Autowired
-    UserAuthenticationService auth;
+    UserAuthenticationService authenticationService;
 
     @Override
     protected void additionalAuthenticationChecks(
@@ -31,7 +31,7 @@ public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthen
         final Object token = authentication.getCredentials();
         return Optional.ofNullable(token)
                        .map(String::valueOf)
-                       .flatMap(auth::findByToken)
+                       .flatMap(authenticationService::findByToken)
                        .orElseThrow(
                                () -> new UsernameNotFoundException("Couldn't find user: " + token)
                        );

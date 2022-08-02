@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.security.strategies;
+package com.inacioferrarini.templates.api.security.navigation;
 
 import org.springframework.security.web.RedirectStrategy;
 

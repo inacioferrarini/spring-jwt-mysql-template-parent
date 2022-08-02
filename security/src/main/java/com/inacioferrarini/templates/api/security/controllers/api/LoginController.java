@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @Autowired
-    UserAuthenticationService authentication;
+    UserAuthenticationService authenticationService;
 
     @Autowired
     UserService users;
@@ -21,7 +21,7 @@ public class LoginController {
     String login(
             @RequestBody LoginUserRequestDTO loginUserRequestDTO
     ) {
-        return authentication
+        return authenticationService
                 .login(
                         loginUserRequestDTO.getUsername(),
                         loginUserRequestDTO.getPassword()
