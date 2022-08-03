@@ -20,9 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Service
 @AllArgsConstructor(access = PACKAGE)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-final class TokenAuthenticationService implements UserAuthenticationService {
+final class TokenAuthenticationServiceImpl implements UserAuthenticationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationServiceImpl.class);
 
     @Autowired
     TokenService tokenService;

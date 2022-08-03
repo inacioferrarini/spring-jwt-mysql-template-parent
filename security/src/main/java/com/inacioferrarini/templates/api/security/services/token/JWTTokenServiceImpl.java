@@ -18,16 +18,16 @@ import static io.jsonwebtoken.impl.TextCodec.BASE64;
 import static java.util.Objects.requireNonNull;
 
 @Service
-final class JWTTokenService implements Clock, TokenService {
+final class JWTTokenServiceImpl implements Clock, TokenService {
 
-    private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
+    private static final Logger logger = LoggerFactory.getLogger(JWTTokenServiceImpl.class);
     private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
     private static final ResourceBundle resource = ResourceBundle.getBundle("security");
 
     private String issuer;
     private String secretKey;
 
-    JWTTokenService() {
+    JWTTokenServiceImpl() {
         this.issuer = requireNonNull(
                 resource.getString("jwt.issuer")
         );
