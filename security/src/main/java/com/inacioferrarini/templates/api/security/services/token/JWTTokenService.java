@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.impl.TextCodec.BASE64;
@@ -21,14 +22,19 @@ final class JWTTokenService implements Clock, TokenService {
 
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenService.class);
     private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
+    private static final ResourceBundle resource = ResourceBundle.getBundle("security");
 
-    String issuer;
-    String secretKey;
+    private String issuer;
+    private String secretKey;
 
     JWTTokenService() {
-        this.issuer = requireNonNull("inacioferrarini.com");
+        this.issuer = requireNonNull(
+                resource.getString("jwt.issuer")
+        );
         logger.debug("JWT Token Issuer: {}", this.issuer);
-        this.secretKey = BASE64.encode("www.inacioferrarini.com");
+        this.secretKey = BASE64.encode(
+                requireNonNull(resource.getString("jwt.secretKeySeed"))
+        );
     }
 
     private static Map<String, String> parseClaims(final Supplier<Claims> toClaims) {

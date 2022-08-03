@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "user")
 @Data
@@ -14,19 +15,23 @@ public class UserEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @Column
     private String passwordHash;
 
-    @OneToOne(mappedBy = "owner", optional = true)
-    private JwtTokenEntity jwtToken;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<JwtTokenEntity> jwtTokens;
 
-    public UserEntity(String username, String email, String passwordHash) {
+    public UserEntity(
+            String username,
+            String email,
+            String passwordHash
+    ) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;

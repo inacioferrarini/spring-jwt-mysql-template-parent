@@ -12,8 +12,8 @@ public class JwtTokenEntity {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity owner;
 
     private String token;

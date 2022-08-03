@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.security.errors.advices;
+package com.inacioferrarini.templates.api.errors.advices;
 
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import org.springframework.http.HttpHeaders;
