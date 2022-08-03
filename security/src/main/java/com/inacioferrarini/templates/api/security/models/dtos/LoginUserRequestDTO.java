@@ -7,10 +7,10 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class LoginUserRequestDTO {
 
-    @NotEmpty(message = "Username is required")
+    @NotEmpty(message = "{constraints.userName.NotEmpty.message}")
     private final String username;
 
-    @NotEmpty(message = "Password is required")
+    @NotEmpty(message = "{constraints.password.NotEmpty.message}")
     private final String password;
 
 }
