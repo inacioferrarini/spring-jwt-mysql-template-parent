@@ -50,7 +50,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", ex.getField().getFieldName() + " is already being used.");
+        body.put("error", ex.getField().getValidationMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
