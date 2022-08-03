@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.services.authentication;
 
-import com.inacioferrarini.templates.api.security.models.User;
+import com.inacioferrarini.templates.api.security.models.UserDTO;
 
 import java.util.Optional;
 
@@ -10,7 +10,7 @@ public interface UserAuthenticationService {
             String username,
             String password
     );
-    Optional<User> findByToken(String token);
-    void logout(User user);
+    Optional<UserDTO> findByToken(String token);
+    void logout(UserDTO userDTO);
 
 }

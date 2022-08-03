@@ -1,7 +1,7 @@
 package com.inacioferrarini.templates.api.security.services.authentication;
 
 import com.google.common.collect.ImmutableMap;
-import com.inacioferrarini.templates.api.security.models.User;
+import com.inacioferrarini.templates.api.security.models.UserDTO;
 import com.inacioferrarini.templates.api.security.services.token.TokenService;
 import com.inacioferrarini.templates.api.security.services.user.UserService;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     }
 
     @Override
-    public Optional<User> findByToken(final String token) {
+    public Optional<UserDTO> findByToken(final String token) {
         // TODO: replace by repository usage
         logger.debug("findByToken: {}", token);
         return Optional
@@ -58,7 +58,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     }
 
     @Override
-    public void logout(final User user) {
+    public void logout(final UserDTO userDTO) {
     }
 
 }

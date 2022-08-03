@@ -18,7 +18,7 @@ mvn -e -U clean spring-boot:run
 curl --location -i --request POST 'http://localhost:8080/api/security/register' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
--d '{"username":"Inacio","password":"123456"}'
+-d '{"username":"Inacio","email":"inacio@email.com","password":"123456"}'
 
 ------------------------------------------------------------------------------
 -- Security: Login

@@ -1,55 +1,78 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
-import com.inacioferrarini.templates.api.security.models.User;
+import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
+import com.inacioferrarini.templates.api.security.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
 
 @Service
 final class UserServiceImpl implements UserService {
 
-    Map<String, User> users = new HashMap<>() {{
-        put(
-                "Matt",
-                new User(
-                        "0",
-                        "matt",
-                        "idg"
-                )
-        );
-    }};
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public User save(final User user) {
-        // TODO: replace by repository
-        return users.put(
-                user.getId(),
-                user
+    public void create(UserDTO user) {
+        final UserEntity userEntity = new UserEntity(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword()
         );
+        userRepository.save(userEntity);
     }
 
-    @Override
-    public Optional<User> find(final String id) {
-        // TODO: replace by repository
-        return ofNullable(users.get(id));
-    }
+    public Optional<UserDTO> findById(String id) {
+        UserEntity searchUserEntity = new UserEntity();
+        searchUserEntity.setUsername(id);
+        Example<UserEntity> userExample = Example.of(searchUserEntity);
 
-    @Override
-    public Optional<User> findByUsername(final String username) {
-        // TODO: replace by repository
-        return users
-                .values()
+        return userRepository
+                .findAll(userExample)
                 .stream()
-                .filter(u -> Objects.equals(
-                                username,
-                                u.getUsername()
-                        )
-                )
+                .map(userEntity -> new UserDTO(
+                        userEntity.getUsername(),
+                        userEntity.getUsername(),
+                        userEntity.getEmail(),
+                        userEntity.getPasswordHash()
+                ))
+                .findFirst();
+    }
+
+    public Optional<UserDTO> findByUsername(String username) {
+        UserEntity searchUserEntity = new UserEntity();
+        searchUserEntity.setUsername(username);
+        Example<UserEntity> userExample = Example.of(searchUserEntity);
+
+        return userRepository
+                .findAll(userExample)
+                .stream()
+                .map(userEntity -> new UserDTO(
+                        userEntity.getUsername(),
+                        userEntity.getUsername(),
+                        userEntity.getEmail(),
+                        userEntity.getPasswordHash()
+                ))
+                .findFirst();
+    }
+
+    public Optional<UserDTO> findByEmail(String email) {
+        UserEntity searchUserEntity = new UserEntity();
+        searchUserEntity.setEmail(email);
+        Example<UserEntity> userExample = Example.of(searchUserEntity);
+
+        return userRepository
+                .findAll(userExample)
+                .stream()
+                .map(userEntity -> new UserDTO(
+                        userEntity.getUsername(),
+                        userEntity.getUsername(),
+                        userEntity.getEmail(),
+                        userEntity.getPasswordHash()
+                ))
                 .findFirst();
     }
 

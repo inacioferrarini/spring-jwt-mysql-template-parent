@@ -8,22 +8,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Builder
-public class User implements UserDetails {
+public class UserDTO implements UserDetails {
 
     private static final long serialVersionUID = 2396654715019746670L;
 
-    String id;
-    String username;
-    String password;
+    private final String id;
+    private final String username;
+    private final String email;
+    private final String password;
 
-    public User(
+    public UserDTO(
             String id,
             String username,
+            String email,
             String password
     ) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
     }
 
@@ -70,5 +72,10 @@ public class User implements UserDetails {
     public String getId() {
         return id;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
 
 }

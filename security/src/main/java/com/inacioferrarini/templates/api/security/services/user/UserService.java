@@ -1,11 +1,13 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
-import com.inacioferrarini.templates.api.security.models.User;
+import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 
 import java.util.Optional;
 
 public interface UserService {
-    User save(User user);
-    Optional<User> find(String id);
-    Optional<User> findByUsername(String username);
+    void create(UserDTO user);
+    Optional<UserDTO> findById(String id);
+    Optional<UserDTO> findByUsername(String username);
+    Optional<UserDTO> findByEmail(String email);
 }
