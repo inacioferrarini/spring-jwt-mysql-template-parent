@@ -27,6 +27,7 @@ public class LoginController {
                         loginUserRequestDTO.getPassword()
                 )
                 .orElseThrow(
+                        // TODO: Throw Exception - Handle this exception inside the service
                         () -> new RuntimeException("invalid login and/or password")
                 );
     }

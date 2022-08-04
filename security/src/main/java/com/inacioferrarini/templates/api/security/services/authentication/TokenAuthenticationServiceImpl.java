@@ -2,6 +2,7 @@ package com.inacioferrarini.templates.api.security.services.authentication;
 
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import com.inacioferrarini.templates.api.security.services.token.TokenService;
 import com.inacioferrarini.templates.api.security.services.user.UserService;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PACKAGE;
@@ -26,8 +26,12 @@ final class TokenAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Autowired
     TokenService tokenService;
+
     @Autowired
     UserService userService;
+
+    @Autowired
+    private PasswordEncoderService passwordEncoderService;
 
     @Override
     public Optional<String> login(
@@ -37,10 +41,11 @@ final class TokenAuthenticationServiceImpl implements UserAuthenticationService 
         // TODO: replace by repository usage
         return userService
                 .findByUsername(username)
-                .filter(user -> Objects.equals(
-                        password,
-                        user.getPassword()
-                ))
+                .filter(user -> {
+                    return passwordEncoderService.matches(
+                            password, user.getPassword()
+                    );
+                })
                 .map(user -> tokenService.newToken(ImmutableMap.of(
                         "username",
                         username

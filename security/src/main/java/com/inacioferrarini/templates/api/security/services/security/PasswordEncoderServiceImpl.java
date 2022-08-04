@@ -13,8 +13,17 @@ public class PasswordEncoderServiceImpl implements PasswordEncoderService {
         return new BCryptPasswordEncoder();
     }
 
-    public String encode(final String password) {
+    public String encode(final CharSequence password) {
         return passwordEncoder().encode(password);
+    }
+
+    public Boolean matches(
+            final CharSequence password,
+            final String encodedPassword
+    ) {
+        return passwordEncoder().matches(
+                password, encodedPassword
+        );
     }
 
 }
