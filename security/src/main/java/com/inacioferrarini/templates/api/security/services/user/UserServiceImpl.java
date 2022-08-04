@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -39,7 +40,12 @@ final class UserServiceImpl implements UserService {
         final UserEntity userEntity = new UserEntity(
                 user.getUsername(),
                 user.getEmail(),
-                encodedPassword
+                encodedPassword,
+                new HashSet<>(),
+                user.isAccountNonExpired(),
+                user.isAccountNonLocked(),
+                user.isCredentialsNonExpired(),
+                user.isEnabled()
         );
         userRepository.save(userEntity);
     }

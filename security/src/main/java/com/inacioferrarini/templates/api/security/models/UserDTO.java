@@ -14,50 +14,47 @@ public class UserDTO implements UserDetails {
     private final String username;
     private final String email;
     private final String password;
+    private final ArrayList<GrantedAuthority> authorities;
+    private final Boolean accountNonExpired;
+    private final Boolean accountNonLocked;
+    private final Boolean credentialsNonExpired;
+    private final Boolean enabled;
 
     public UserDTO(
             String username,
             String email,
             String password
     ) {
+        this(
+          username,
+          email,
+          password,
+          new ArrayList<>(),
+          true,
+          true,
+          true,
+          true
+        );
+    }
+
+    public UserDTO(
+            String username,
+            String email,
+            String password,
+            ArrayList<GrantedAuthority> authorities,
+            Boolean accountNonExpired,
+            Boolean accountNonLocked,
+            Boolean credentialsNonExpired,
+            Boolean enabled
+    ) {
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    @JsonIgnore
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
-
-    @JsonIgnore
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+        this.authorities = authorities;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
     }
 
     @Override
@@ -66,7 +63,43 @@ public class UserDTO implements UserDetails {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
 }
