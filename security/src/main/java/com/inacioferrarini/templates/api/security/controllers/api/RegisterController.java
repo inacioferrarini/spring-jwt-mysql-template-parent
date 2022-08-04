@@ -30,15 +30,10 @@ public class RegisterController {
 
         userService.create(user);
 
-
-
-
         return authenticationService
-                .login(
-                        registerUserRequestDTO.getUsername(),
-                        registerUserRequestDTO.getPassword()
-                )
+                .login(userName, password)
                 .orElseThrow(
+                        // TODO: Throw Exception - Handle this exception inside the service
                         () -> new RuntimeException("invalid login and/or password")
                 );
     }

@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
-import com.inacioferrarini.templates.api.base.services.security.PasswordEncoderService;
+import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.models.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
@@ -35,8 +35,7 @@ final class UserServiceImpl implements UserService {
                     );
                 });
 
-        final String encodedPassword = passwordEncoderService.passwordEncoder()
-                                                             .encode(user.getPassword());
+        final String encodedPassword = passwordEncoderService.encode(user.getPassword());
         final UserEntity userEntity = new UserEntity(
                 user.getUsername(),
                 user.getEmail(),
