@@ -1,5 +1,7 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
+import com.inacioferrarini.templates.api.base.services.security.PasswordEncoderService;
+import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.models.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
@@ -15,12 +17,30 @@ final class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoderService passwordEncoderService;
+
     @Override
     public void create(UserDTO user) {
+        findByUsername(user.getUsername())
+                .ifPresent(userEntity -> {
+                    throw new FieldValueAlreadyInUseException(
+                            FieldValueAlreadyInUseException.Field.USERNAME
+                    );
+                });
+        findByEmail(user.getEmail())
+                .ifPresent(userEntity -> {
+                    throw new FieldValueAlreadyInUseException(
+                            FieldValueAlreadyInUseException.Field.EMAIL
+                    );
+                });
+
+        final String encodedPassword = passwordEncoderService.passwordEncoder()
+                                                             .encode(user.getPassword());
         final UserEntity userEntity = new UserEntity(
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword()
+                encodedPassword
         );
         userRepository.save(userEntity);
     }
@@ -34,7 +54,6 @@ final class UserServiceImpl implements UserService {
                 .findAll(userExample)
                 .stream()
                 .map(userEntity -> new UserDTO(
-                        userEntity.getUsername(),
                         userEntity.getUsername(),
                         userEntity.getEmail(),
                         userEntity.getPasswordHash()
@@ -52,7 +71,6 @@ final class UserServiceImpl implements UserService {
                 .stream()
                 .map(userEntity -> new UserDTO(
                         userEntity.getUsername(),
-                        userEntity.getUsername(),
                         userEntity.getEmail(),
                         userEntity.getPasswordHash()
                 ))
@@ -68,7 +86,6 @@ final class UserServiceImpl implements UserService {
                 .findAll(userExample)
                 .stream()
                 .map(userEntity -> new UserDTO(
-                        userEntity.getUsername(),
                         userEntity.getUsername(),
                         userEntity.getEmail(),
                         userEntity.getPasswordHash()

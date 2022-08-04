@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>jwt</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>jwt</name>
     <description>Demo project for Spring Boot</description>
     <dependencies>

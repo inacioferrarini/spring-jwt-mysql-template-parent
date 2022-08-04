@@ -11,11 +11,13 @@
         <module name="security" />
         <module name="feature" />
         <module name="jwt" />
+        <module name="Commons" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Commons" options="-parameters" />
       <module name="app" options="-parameters" />
       <module name="feature" options="-parameters" />
       <module name="jwt" options="-parameters" />

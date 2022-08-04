@@ -1,5 +1,6 @@
 package com.inacioferrarini.templates.api.security.models.entities;
 
+import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 @Entity(name = "user")
 @Data
 @NoArgsConstructor
-public class UserEntity {
+public class UserEntity extends AbstractBaseEntity {
 
     @Id
     @GeneratedValue

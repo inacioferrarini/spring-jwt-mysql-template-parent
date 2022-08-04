@@ -1,6 +1,5 @@
 package com.inacioferrarini.templates.api.security.controllers.api;
 
-import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.models.UserDTO;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserRequestDTO;
 import com.inacioferrarini.templates.api.security.services.authentication.UserAuthenticationService;
@@ -23,28 +22,15 @@ public class RegisterController {
 
     @PostMapping("/api/security/register")
     public String register(@Valid @RequestBody RegisterUserRequestDTO registerUserRequestDTO) {
-        final String userId = registerUserRequestDTO.getUsername();
         final String userName = registerUserRequestDTO.getUsername();
         final String email = registerUserRequestDTO.getEmail();
         final String password = registerUserRequestDTO.getPassword();
 
-        userService
-                .findByUsername(userName)
-                .ifPresent(user -> {
-                    throw new FieldValueAlreadyInUseException(
-                            FieldValueAlreadyInUseException.Field.USERNAME
-                    );
-                });
-        userService
-                .findByEmail(email)
-                .ifPresent(user -> {
-                    throw new FieldValueAlreadyInUseException(
-                            FieldValueAlreadyInUseException.Field.EMAIL
-                    );
-                });
+        final UserDTO user = new UserDTO(userName, email, password);
 
-        final UserDTO user = new UserDTO(userId, userName, email, password);
         userService.create(user);
+
+
 
 
         return authenticationService

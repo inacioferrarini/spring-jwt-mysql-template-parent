@@ -12,18 +12,15 @@ public class UserDTO implements UserDetails {
 
     private static final long serialVersionUID = 2396654715019746670L;
 
-    private final String id;
     private final String username;
     private final String email;
     private final String password;
 
     public UserDTO(
-            String id,
             String username,
             String email,
             String password
     ) {
-        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -69,13 +66,8 @@ public class UserDTO implements UserDetails {
         return this.username;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getEmail() {
         return email;
     }
-
 
 }
