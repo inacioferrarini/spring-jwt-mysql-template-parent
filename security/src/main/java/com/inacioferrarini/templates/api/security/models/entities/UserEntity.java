@@ -26,7 +26,7 @@ public class UserEntity extends AbstractBaseEntity {
     private String passwordHash;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<JwtTokenEntity> jwtTokens;
+    private Set<SecurityTokenEntity> jwtTokens;
 
     @Column
     private Boolean nonExpired;
@@ -44,7 +44,7 @@ public class UserEntity extends AbstractBaseEntity {
             String username,
             String email,
             String passwordHash,
-            Set<JwtTokenEntity> jwtTokens,
+            Set<SecurityTokenEntity> jwtTokens,
             Boolean nonExpired,
             Boolean nonLocked,
             Boolean credentialsNotExpired,

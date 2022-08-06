@@ -4,10 +4,11 @@ import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
-@Entity(name = "jwt_token")
+@Entity(name = "security_token")
 @Data
-public class JwtTokenEntity extends AbstractBaseEntity {
+public class SecurityTokenEntity extends AbstractBaseEntity {
 
     @Id
     @GeneratedValue
@@ -18,5 +19,8 @@ public class JwtTokenEntity extends AbstractBaseEntity {
     private UserEntity owner;
 
     private String token;
+
+    @Column(columnDefinition="TIMESTAMP DEFAULT NULL")
+    private Timestamp validUntil;
 
 }

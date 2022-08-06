@@ -12,29 +12,20 @@ import java.time.ZonedDateTime;
 public abstract class AbstractBaseEntity {
 
     @Column(updatable = false, columnDefinition="TIMESTAMP DEFAULT NULL")
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     @Column(columnDefinition="TIMESTAMP DEFAULT NULL")
-    private Timestamp updated_at;
+    private Timestamp updatedAt;
 
     @PrePersist
     public void onInsert() {
-        created_at = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
-        updated_at = created_at;
+        createdAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
+        updatedAt = createdAt;
     }
 
     @PreUpdate
     public void onUpdate() {
-        updated_at = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
+        updatedAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
     }
-
-
-//    @CreationTimestamp
-//    @Column(name="created_at", nullable = false, updatable = false, insertable = false)
-//    private Timestamp createdAt;
-//
-//    @UpdateTimestamp
-//    @Column(name="updated_at", nullable = false, updatable = false, insertable = false)
-//    private Timestamp updatedAt;
 
 }
