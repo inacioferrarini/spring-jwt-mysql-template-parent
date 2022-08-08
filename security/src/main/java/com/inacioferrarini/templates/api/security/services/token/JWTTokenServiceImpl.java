@@ -2,6 +2,7 @@ package com.inacioferrarini.templates.api.security.services.token;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import org.joda.time.DateTime;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -23,9 +26,10 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenServiceImpl.class);
     private static final GzipCompressionCodec COMPRESSION_CODEC = new GzipCompressionCodec();
     private static final ResourceBundle resource = ResourceBundle.getBundle("security");
+    private static final int TOKEN_VALID_DAYS = 30;
 
-    private String issuer;
-    private String secretKey;
+    private final String issuer;
+    private final String secretKey;
 
     JWTTokenServiceImpl() {
         this.issuer = requireNonNull(
@@ -53,7 +57,7 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
         }
     }
 
-    public String newToken(final Map<String, String> attributes) {
+    public TokenDataRecord newToken(final Map<String, String> attributes) {
         final DateTime now = DateTime.now();
         final Claims claims = Jwts.claims()
                                   .setIssuer(issuer)
@@ -61,16 +65,19 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
 
         claims.putAll(attributes);
 
-        // TODO: Store JWT Token in repository
+        final String token = Jwts.builder()
+                                 .setClaims(claims)
+                                 .signWith(
+                                         HS256,
+                                         secretKey
+                                 )
+                                 .compressWith(COMPRESSION_CODEC)
+                                 .compact();
 
-        return Jwts.builder()
-                   .setClaims(claims)
-                   .signWith(
-                           HS256,
-                           secretKey
-                   )
-                   .compressWith(COMPRESSION_CODEC)
-                   .compact();
+        return new TokenDataRecord(
+                token,
+                createValidDate(TOKEN_VALID_DAYS)
+        );
     }
 
     @Override
@@ -89,6 +96,12 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
     public Date now() {
         final DateTime now = DateTime.now();
         return now.toDate();
+    }
+
+    private Timestamp createValidDate(final int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, days);
+        return new Timestamp(calendar.getTimeInMillis());
     }
 
 }

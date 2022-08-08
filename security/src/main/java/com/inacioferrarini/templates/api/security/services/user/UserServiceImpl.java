@@ -1,10 +1,10 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
-import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.models.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
+import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

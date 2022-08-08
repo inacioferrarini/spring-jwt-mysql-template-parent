@@ -1,6 +1,7 @@
 package com.inacioferrarini.templates.api.security.controllers.api;
 
-import com.inacioferrarini.templates.api.security.models.dtos.LoginUserRequestDTO;
+import com.inacioferrarini.templates.api.security.models.dtos.LoginUserRequestRecord;
+import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.services.authentication.UserAuthenticationService;
 import com.inacioferrarini.templates.api.security.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,13 @@ public class LoginController {
     UserService users;
 
     @PostMapping("/api/security/login")
-    String login(
-            @RequestBody LoginUserRequestDTO loginUserRequestDTO
+    TokenDataRecord login(
+            @RequestBody LoginUserRequestRecord loginUserRequestRecord
     ) {
         return authenticationService
                 .login(
-                        loginUserRequestDTO.getUsername(),
-                        loginUserRequestDTO.getPassword()
-                )
-                .orElseThrow(
-                        // TODO: Throw Exception - Handle this exception inside the service
-                        () -> new RuntimeException("invalid login and/or password")
+                        loginUserRequestRecord.username(),
+                        loginUserRequestRecord.password()
                 );
     }
 

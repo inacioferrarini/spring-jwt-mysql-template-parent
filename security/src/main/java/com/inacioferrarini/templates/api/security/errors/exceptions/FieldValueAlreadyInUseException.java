@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 public class FieldValueAlreadyInUseException extends RuntimeException {
 
     private static final ResourceBundle resource = ResourceBundle.getBundle("ValidationMessages");
+    private static final String ERROR_MESSAGE_KEY = "constraints.uniqueValue.uniqueValueViolation";
     private final Field field;
 
     public FieldValueAlreadyInUseException(final Field field) {
@@ -28,7 +29,7 @@ public class FieldValueAlreadyInUseException extends RuntimeException {
 
         public String getValidationMessage() {
             return MessageFormat.format(
-                    resource.getString("constraints.uniqueValue.uniqueValueViolation"),
+                    resource.getString(ERROR_MESSAGE_KEY),
                     getFieldName()
             );
         }
