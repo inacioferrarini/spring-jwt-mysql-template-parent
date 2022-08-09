@@ -10,6 +10,7 @@
         <module name="app" />
         <module name="security" />
         <module name="feature" />
+        <module name="security-tests" />
         <module name="jwt" />
         <module name="Commons" />
       </profile>
@@ -22,6 +23,7 @@
       <module name="feature" options="-parameters" />
       <module name="jwt" options="-parameters" />
       <module name="security" options="-parameters" />
+      <module name="security-tests" options="-parameters" />
     </option>
   </component>
 </project>
