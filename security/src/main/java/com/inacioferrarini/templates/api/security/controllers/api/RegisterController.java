@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -25,7 +26,9 @@ public class RegisterController {
     UserService userService;
 
     @PostMapping("/api/security/register")
-    public ResponseEntity<RegisterUserResponseRecord> register(@Valid @RequestBody RegisterUserRequestRecord registerUserRequestRecord) {
+    public ResponseEntity<RegisterUserResponseRecord> register(
+            @Valid @RequestBody RegisterUserRequestRecord registerUserRequestRecord
+    ) {
         final String userName = registerUserRequestRecord.username();
         final String email = registerUserRequestRecord.email();
         final String password = registerUserRequestRecord.password();

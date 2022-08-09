@@ -39,6 +39,8 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 public class RegisterUserITTests {
 
+    private static final String API_URL = "/api/security/register";
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -61,8 +63,9 @@ public class RegisterUserITTests {
         Mockito.reset(securityTokenRepository);
     }
 
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Success
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_success_mustReturnToken() {
         // Given
@@ -77,7 +80,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<RegisterUserResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, RegisterUserResponseRecord.class);
+        ResponseEntity<RegisterUserResponseRecord> response = restTemplate.postForEntity(API_URL, entity, RegisterUserResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -91,10 +94,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(1)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Duplicated Username
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_duplicatedUsernameFailure_mustReturnError() {
         // Given
@@ -109,7 +111,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringErrorResponseRecord.class);
+        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -122,10 +124,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Duplicated Email
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_duplicatedEmailFailure_mustReturnError() {
         // Given
@@ -140,7 +141,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringErrorResponseRecord.class);
+        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -153,10 +154,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Empty Username
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_emptyUsernameFailure_mustReturnError() {
         // Given
@@ -169,7 +169,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -185,10 +185,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Absent Username
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_absentUsernameFailure_mustReturnError() {
         // Given
@@ -201,7 +200,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -217,10 +216,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Empty Email
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_emptyEmailFailure_mustReturnError() {
         // Given
@@ -233,7 +231,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -249,10 +247,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Absent Email
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_absentEmailFailure_mustReturnError() {
         // Given
@@ -265,7 +262,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -281,10 +278,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Empty Password
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_emptyPasswordFailure_mustReturnError() {
         // Given
@@ -297,7 +293,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -313,10 +309,9 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Absent Password
-    //
-
+    // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_absentPasswordFailure_mustReturnError() {
         // Given
@@ -329,7 +324,7 @@ public class RegisterUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
 
         // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity("/api/security/register", entity, StringListErrorResponseRecord.class);
+        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -345,16 +340,18 @@ public class RegisterUserITTests {
         Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
-    //
+    // ---------------------------------------------------------------------------------
     // Helper Methods
-    //
+    // ---------------------------------------------------------------------------------
 
     private void setupUserRepositoryFindOneReturnOneUser() {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername("Test User");
         userEntity.setPasswordHash(passwordEncoderService.encode("1234"));
+        Example<UserEntity> userExample = Example.of(userEntity);
+
         Optional<UserEntity> optionalUserEntity = Optional.of(userEntity);
-        when(userRepository.findOne(ArgumentMatchers.any(Example.class))).thenReturn(optionalUserEntity);
+        when(userRepository.findOne(argThat(new UserEntityUsernameMatcher(userExample)))).thenReturn(optionalUserEntity);
     }
 
     private void setupUserRepositoryFindAllReturnOneUserSameUsername() {
