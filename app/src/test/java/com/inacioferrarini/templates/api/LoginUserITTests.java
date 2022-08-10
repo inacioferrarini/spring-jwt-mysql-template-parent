@@ -107,17 +107,15 @@ public class LoginUserITTests {
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
-        ResponseEntity<Map> response = restTemplate.postForEntity(API_URL, entity, Map.class);
-        assertNotNull(response);
-        // {"timestamp":"2022-08-09T16:52:28.335475","status":401,"error":"Invalid username / password combination."}%
+        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
 
         // Then
-//        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-//        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
-//        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
-//        assertEquals("Username is already being used.", response.getBody().error());
-//        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
-//        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
+        assertEquals("Username is already being used.", response.getBody().error());
+        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
+        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
     }
 
     // ---------------------------------------------------------------------------------
