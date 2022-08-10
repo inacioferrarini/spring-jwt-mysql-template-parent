@@ -71,13 +71,13 @@ public class RegisterUserITTests {
         // Given
         setupUserRepositoryFindOneReturnOneUser();
 
-        final String userInJson = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<RegisterUserResponseRecord> response = restTemplate.postForEntity(API_URL, entity, RegisterUserResponseRecord.class);
@@ -102,13 +102,13 @@ public class RegisterUserITTests {
         // Given
         setupUserRepositoryFindAllReturnOneUserSameUsername();
 
-        final String userInJson = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
@@ -132,13 +132,13 @@ public class RegisterUserITTests {
         // Given
         setupUserRepositoryFindAllReturnOneUserSameEmail();
 
-        final String userInJson = "{\"username\":\"Test User 2\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Test User 2\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
@@ -160,13 +160,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyUsernameFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"username\":\"\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
@@ -191,13 +191,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentUsernameFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
+        final String requestBody = "{\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
@@ -222,13 +222,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyEmailFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"username\":\"Test User\",\"email\":\"\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"email\":\"\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
@@ -253,13 +253,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentEmailFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"username\":\"Test User\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
@@ -284,13 +284,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyPasswordFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
@@ -315,13 +315,13 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentPasswordFailure_mustReturnError() {
         // Given
-        final String userInJson = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\"}";
+        final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<>(userInJson, headers);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
         // When
         ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
