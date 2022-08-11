@@ -4,20 +4,13 @@ import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRec
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.LoginUserResponseRecord;
 import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
-import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
-import com.inacioferrarini.templates.api.security.repositories.SecurityTokenRepository;
-import com.inacioferrarini.templates.api.security.repositories.UserRepository;
-import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
-import com.inacioferrarini.templates.api.tests.mockito.matchers.UserEntityUsernameMatcher;
-import org.junit.After;
-import org.junit.Before;
+import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Example;
 import org.springframework.http.*;
@@ -30,8 +23,6 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,24 +34,8 @@ public class LoginUserITTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private SecurityTokenRepository securityTokenRepository;
-
     @Autowired
-    private PasswordEncoderService passwordEncoderService;
-
-    @Before
-    public void init() {
-    }
-
-    @After
-    public void resetMocks() {
-        Mockito.reset(userRepository);
-        Mockito.reset(securityTokenRepository);
-    }
+    private SecurityTestsHelper securityTestsHelper;
 
     // ---------------------------------------------------------------------------------
     // Login: Success
@@ -68,7 +43,8 @@ public class LoginUserITTests {
     @Test
     public void login_success_mustReturnToken() {
         // Given
-        setupUserRepositoryFindOneReturnOneUser();
+        securityTestsHelper.deleteAll();
+        securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
@@ -86,8 +62,7 @@ public class LoginUserITTests {
         assertNotNull(response.getBody().token());
         assertEquals(2, response.getBody().token().chars().filter(ch -> ch == '.').count());
         assertEquals(29l, daysFromNow(response.getBody().validUntil()));
-        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(1)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(1L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -96,9 +71,10 @@ public class LoginUserITTests {
     @Test
     public void login_wrongUsernameFailure_mustReturnError() {
         // Given
-        setupUserRepositoryFindOneReturnOneUser();
+        securityTestsHelper.deleteAll();
+        securityTestsHelper.createTestUser();
 
-        final String requestBody = "{\"username\":\"asdadasd\",\"password\":\"1234\"}";
+        final String requestBody = "{\"username\":\"Teste User 2\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -114,8 +90,7 @@ public class LoginUserITTests {
         assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -124,7 +99,8 @@ public class LoginUserITTests {
     @Test
     public void login_wrongPasswordFailure_mustReturnError() {
         // Given
-        setupUserRepositoryFindOneReturnOneUser();
+        securityTestsHelper.deleteAll();
+        securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"123456\"}";
 
@@ -142,8 +118,7 @@ public class LoginUserITTests {
         assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -171,8 +146,7 @@ public class LoginUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Username is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -200,8 +174,7 @@ public class LoginUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Username is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -229,8 +202,7 @@ public class LoginUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Password is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
@@ -258,23 +230,12 @@ public class LoginUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Password is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
     // Helper Methods
     // ---------------------------------------------------------------------------------
-
-    private void setupUserRepositoryFindOneReturnOneUser() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("Test User");
-        userEntity.setPasswordHash(passwordEncoderService.encode("1234"));
-        Example<UserEntity> userExample = Example.of(userEntity);
-
-        Optional<UserEntity> optionalUserEntity = Optional.of(userEntity);
-        when(userRepository.findOne(argThat(new UserEntityUsernameMatcher(userExample)))).thenReturn(optionalUserEntity);
-    }
 
     private long daysFromNow(final Timestamp timestamp) {
         Timestamp now = new Timestamp(new Date().getTime());

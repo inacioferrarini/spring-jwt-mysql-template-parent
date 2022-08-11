@@ -3,24 +3,12 @@ package com.inacioferrarini.templates.api;
 import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserResponseRecord;
-import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
-import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
-import com.inacioferrarini.templates.api.security.repositories.SecurityTokenRepository;
-import com.inacioferrarini.templates.api.security.repositories.UserRepository;
-import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
-import com.inacioferrarini.templates.api.tests.mockito.matchers.UserEntityEmailMatcher;
-import com.inacioferrarini.templates.api.tests.mockito.matchers.UserEntityUsernameMatcher;
-import org.junit.After;
-import org.junit.Before;
+import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.domain.Example;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,8 +19,6 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,24 +30,8 @@ public class RegisterUserITTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private SecurityTokenRepository securityTokenRepository;
-
     @Autowired
-    private PasswordEncoderService passwordEncoderService;
-
-    @Before
-    public void init() {
-    }
-
-    @After
-    public void resetMocks() {
-        Mockito.reset(userRepository);
-        Mockito.reset(securityTokenRepository);
-    }
+    private SecurityTestsHelper securityTestsHelper;
 
     // ---------------------------------------------------------------------------------
     // RegisterUser: Success
@@ -69,7 +39,7 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_success_mustReturnToken() {
         // Given
-        setupUserRepositoryFindOneReturnOneUser();
+        securityTestsHelper.deleteAll();
 
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
@@ -89,9 +59,7 @@ public class RegisterUserITTests {
         assertNotNull(response.getBody().token().token());
         assertEquals(2, response.getBody().token().token().chars().filter(ch -> ch == '.').count());
         assertEquals(29l, daysFromNow(response.getBody().token().validUntil()));
-        Mockito.verify(userRepository, Mockito.times(1)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(1)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(1)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(1L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -100,7 +68,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_duplicatedUsernameFailure_mustReturnError() {
         // Given
-        setupUserRepositoryFindAllReturnOneUserSameUsername();
+        securityTestsHelper.deleteAll();
+        securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
@@ -118,10 +87,7 @@ public class RegisterUserITTests {
         assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(1)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(1L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -130,7 +96,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_duplicatedEmailFailure_mustReturnError() {
         // Given
-        setupUserRepositoryFindAllReturnOneUserSameEmail();
+        securityTestsHelper.deleteAll();
+        securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User 2\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
@@ -148,10 +115,7 @@ public class RegisterUserITTests {
         assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
         assertEquals("Email is already being used.", response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(2)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(1L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -160,6 +124,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyUsernameFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"username\":\"\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -179,10 +145,7 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Username is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -191,6 +154,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentUsernameFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -210,10 +175,7 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Username is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -222,6 +184,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyEmailFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -241,10 +205,7 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Email is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -253,6 +214,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentEmailFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -272,10 +235,7 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Email is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -284,6 +244,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyPasswordFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -303,10 +265,7 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Password is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
@@ -315,6 +274,8 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentPasswordFailure_mustReturnError() {
         // Given
+        securityTestsHelper.deleteAll();
+
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -334,50 +295,14 @@ public class RegisterUserITTests {
         ArrayList<String> errorMessages = new ArrayList<>();
         errorMessages.add("Password is required.");
         assertEquals(errorMessages, response.getBody().error());
-        Mockito.verify(userRepository, Mockito.times(0)).findAll(ArgumentMatchers.any(Example.class));
-        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(UserEntity.class));
-        Mockito.verify(userRepository, Mockito.times(0)).findOne(ArgumentMatchers.any(Example.class));
-        Mockito.verify(securityTokenRepository, Mockito.times(0)).save(ArgumentMatchers.any(SecurityTokenEntity.class));
+        assertEquals(0L, securityTestsHelper.countUsers());
     }
 
     // ---------------------------------------------------------------------------------
     // Helper Methods
     // ---------------------------------------------------------------------------------
 
-    private void setupUserRepositoryFindOneReturnOneUser() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("Test User");
-        userEntity.setPasswordHash(passwordEncoderService.encode("1234"));
-        Example<UserEntity> userExample = Example.of(userEntity);
-
-        Optional<UserEntity> optionalUserEntity = Optional.of(userEntity);
-        when(userRepository.findOne(argThat(new UserEntityUsernameMatcher(userExample)))).thenReturn(optionalUserEntity);
-    }
-
-    private void setupUserRepositoryFindAllReturnOneUserSameUsername() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("Test User");
-        userEntity.setPasswordHash(passwordEncoderService.encode("1234"));
-        Example<UserEntity> userExample = Example.of(userEntity);
-
-        List<UserEntity> userEntityList = new ArrayList<UserEntity>();
-        userEntityList.add(userEntity);
-
-        when(userRepository.findAll(argThat(new UserEntityUsernameMatcher(userExample)))).thenReturn(userEntityList);
-    }
-
-    private void setupUserRepositoryFindAllReturnOneUserSameEmail() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail("test.user@email.com");
-        userEntity.setPasswordHash(passwordEncoderService.encode("1234"));
-        Example<UserEntity> userExample = Example.of(userEntity);
-
-        List<UserEntity> userEntityList = new ArrayList<UserEntity>();
-        userEntityList.add(userEntity);
-
-        when(userRepository.findAll(argThat(new UserEntityEmailMatcher(userExample)))).thenReturn(userEntityList);
-    }
-
+    // Mover para Test Utils
     private long daysFromNow(final Timestamp timestamp) {
         Timestamp now = new Timestamp(new Date().getTime());
         return Duration.between(now.toInstant(), timestamp.toInstant()).toDays();
