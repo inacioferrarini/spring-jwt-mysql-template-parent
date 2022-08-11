@@ -32,6 +32,13 @@
     <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug" additivity="false">
         <appender-ref ref="httpFileRolling"/>
     </logger>
+
+    <logger name="org.apache.http" level="debug" additivity="false">
+        <appender-ref ref="httpFileRolling"/>
+    </logger>
+    <logger name="org.apache.http.wire" level="debug" additivity="false">
+        <appender-ref ref="httpFileRolling"/>
+    </logger>
     <root level="error">
         <appender-ref ref="appFileRolling"/>
     </root>
