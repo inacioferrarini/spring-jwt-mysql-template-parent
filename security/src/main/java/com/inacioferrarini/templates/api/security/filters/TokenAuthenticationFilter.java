@@ -31,12 +31,7 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
             final HttpServletRequest request,
             final HttpServletResponse response
     ) {
-        final String param = ofNullable(
-                request.getHeader(AUTHORIZATION)
-        ).orElse(
-                request.getParameter("t")
-        );
-
+        final String param = request.getHeader(AUTHORIZATION);
         final String token = ofNullable(param)
                 .map(value -> removeStart(
                              value,
@@ -45,7 +40,7 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
                 )
                 .map(String::trim)
                 .orElseThrow(
-                        () -> new BadCredentialsException("No Token Found!")
+                        () -> new BadCredentialsException("No Token Found!") // TODO: Handle this
                 );
 
         final Authentication auth = new UsernamePasswordAuthenticationToken(
