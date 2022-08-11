@@ -16,6 +16,9 @@
     <logger name="com.inacioferrarini.templates.api" level="debug" additivity="false">
         <appender-ref ref="fileRolling"/>
     </logger>
+    <logger name="org.apache.http" level="debug" additivity="false">
+        <appender-ref ref="fileRolling"/>
+    </logger>
     <root level="error">
         <appender-ref ref="fileRolling"/>
     </root>

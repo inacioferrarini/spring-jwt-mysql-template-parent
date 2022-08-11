@@ -4,7 +4,9 @@ import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRec
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,13 +36,25 @@ public class RegisterUserITTests {
     private SecurityTestsHelper securityTestsHelper;
 
     // ---------------------------------------------------------------------------------
+    // Setup
+    // ---------------------------------------------------------------------------------
+
+    @Before
+    public void before() {
+        securityTestsHelper.deleteAll();
+    }
+
+    @AfterAll
+    void afterAll() {
+        securityTestsHelper.deleteAll();
+    }
+
+    // ---------------------------------------------------------------------------------
     // RegisterUser: Success
     // ---------------------------------------------------------------------------------
     @Test
     public void registerUser_success_mustReturnToken() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -68,7 +82,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_duplicatedUsernameFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
@@ -96,7 +109,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_duplicatedEmailFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User 2\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
@@ -124,8 +136,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyUsernameFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -154,8 +164,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentUsernameFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -184,8 +192,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyEmailFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -214,8 +220,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentEmailFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -244,8 +248,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_emptyPasswordFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"\"}";
 
         HttpHeaders headers = new HttpHeaders();
@@ -274,8 +276,6 @@ public class RegisterUserITTests {
     @Test
     public void registerUser_absentPasswordFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
-
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\"}";
 
         HttpHeaders headers = new HttpHeaders();

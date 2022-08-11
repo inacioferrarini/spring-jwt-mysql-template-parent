@@ -5,7 +5,11 @@ import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorRespons
 import com.inacioferrarini.templates.api.security.models.dtos.LoginUserResponseRecord;
 import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -38,12 +42,25 @@ public class LoginUserITTests {
     private SecurityTestsHelper securityTestsHelper;
 
     // ---------------------------------------------------------------------------------
+    // Setup
+    // ---------------------------------------------------------------------------------
+
+    @Before
+    public void before() {
+        securityTestsHelper.deleteAll();
+    }
+
+    @AfterAll
+    void afterAll() {
+        securityTestsHelper.deleteAll();
+    }
+
+    // ---------------------------------------------------------------------------------
     // Login: Success
     // ---------------------------------------------------------------------------------
     @Test
     public void login_success_mustReturnToken() {
         // Given
-        securityTestsHelper.deleteAll();
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
@@ -71,7 +88,6 @@ public class LoginUserITTests {
     @Test
     public void login_wrongUsernameFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Teste User 2\",\"password\":\"1234\"}";
@@ -99,7 +115,6 @@ public class LoginUserITTests {
     @Test
     public void login_wrongPasswordFailure_mustReturnError() {
         // Given
-        securityTestsHelper.deleteAll();
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"123456\"}";
