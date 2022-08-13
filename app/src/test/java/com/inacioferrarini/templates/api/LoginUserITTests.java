@@ -78,7 +78,7 @@ public class LoginUserITTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody().token());
         assertEquals(2, response.getBody().token().chars().filter(ch -> ch == '.').count());
-        assertEquals(29l, daysFromNow(response.getBody().validUntil()));
+        assertEquals(29L, daysFromNow(response.getBody().validUntil()));
         assertEquals(1L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -103,7 +103,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
@@ -130,7 +130,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
@@ -155,7 +155,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -183,7 +183,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -211,7 +211,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -239,7 +239,7 @@ public class LoginUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0l, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.getBody().timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
