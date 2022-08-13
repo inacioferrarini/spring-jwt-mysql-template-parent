@@ -8,13 +8,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
+        <module name="sample-feature" />
         <module name="security" />
-        <module name="feature" />
         <module name="security-tests" />
-        <module name="jwt" />
         <module name="Commons" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="feature" target="18" />
+      <module name="jwt" target="18" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -22,6 +25,7 @@
       <module name="app" options="-parameters" />
       <module name="feature" options="-parameters" />
       <module name="jwt" options="-parameters" />
+      <module name="sample-feature" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="security-tests" options="-parameters" />
     </option>

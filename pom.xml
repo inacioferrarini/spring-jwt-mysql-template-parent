@@ -26,6 +26,6 @@
         <module>app</module>
         <module>security</module>
         <module>security-tests-artifacts</module>
-        <module>feature</module>
+        <module>sample-feature</module>
     </modules>
 </project>
