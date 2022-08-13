@@ -27,6 +27,5 @@
         <module>security</module>
         <module>security-tests-artifacts</module>
         <module>feature</module>
-        <module>spring-jwt</module>
     </modules>
 </project>
