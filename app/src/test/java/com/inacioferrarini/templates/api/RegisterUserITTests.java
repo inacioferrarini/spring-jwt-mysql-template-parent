@@ -45,7 +45,7 @@ public class RegisterUserITTests {
     }
 
     @AfterAll
-    void afterAll() {
+    static void afterAll() {
         securityTestsHelper.deleteAll();
     }
 
