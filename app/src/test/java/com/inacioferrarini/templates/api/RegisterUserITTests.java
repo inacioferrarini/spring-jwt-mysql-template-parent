@@ -4,6 +4,7 @@ import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRec
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
@@ -44,8 +45,8 @@ public class RegisterUserITTests {
         securityTestsHelper.deleteAll();
     }
 
-    @AfterAll
-    static void afterAll() {
+    @After
+    public void after() {
         securityTestsHelper.deleteAll();
     }
 

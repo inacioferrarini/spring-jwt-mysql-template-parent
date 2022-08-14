@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PACKAGE;

@@ -1,6 +1,5 @@
 package com.inacioferrarini.templates.api.security.errors.exceptions;
 
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 public class InvalidUserCredentialsException extends RuntimeException {

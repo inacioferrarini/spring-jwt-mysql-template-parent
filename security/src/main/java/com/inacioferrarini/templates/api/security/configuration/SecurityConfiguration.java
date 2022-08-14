@@ -19,7 +19,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;

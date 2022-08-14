@@ -3,20 +3,15 @@ package com.inacioferrarini.templates.api;
 import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.LoginUserResponseRecord;
-import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.domain.Example;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -50,8 +45,8 @@ public class LoginUserITTests {
         securityTestsHelper.deleteAll();
     }
 
-    @AfterAll
-    static void afterAll() {
+    @After
+    public void after() {
         securityTestsHelper.deleteAll();
     }
 
