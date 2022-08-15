@@ -1,6 +1,5 @@
 package com.inacioferrarini.templates.api.security.services.token;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 import io.jsonwebtoken.*;
@@ -15,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Supplier;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.impl.TextCodec.BASE64;

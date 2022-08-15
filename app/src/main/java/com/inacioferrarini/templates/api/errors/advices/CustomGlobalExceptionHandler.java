@@ -4,6 +4,7 @@ import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRec
 import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         List<String> errors = ex.getBindingResult()
                                 .getFieldErrors()
                                 .stream()
-                                .map(x -> x.getDefaultMessage())
+                                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                                 .collect(Collectors.toList());
 
         StringListErrorResponseRecord errorResponse = new StringListErrorResponseRecord(

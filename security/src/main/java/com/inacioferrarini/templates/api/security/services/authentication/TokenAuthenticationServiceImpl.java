@@ -58,7 +58,7 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
                             password, user.getPasswordHash()
                     );
                 }).orElseThrow(
-                        () -> new InvalidUserCredentialsException()
+                        InvalidUserCredentialsException::new
                 );
 
         TokenDataRecord tokenDataRecord = tokenService.newToken(
