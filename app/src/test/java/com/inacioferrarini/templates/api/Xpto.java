@@ -1,7 +1,6 @@
 package com.inacioferrarini.templates.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import com.inacioferrarini.test.hamcrest.matchers.CustomMatchers;
 import org.junit.After;
@@ -19,16 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.Date;
-import java.util.Objects;
-
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,15 +65,15 @@ public class Xpto {
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"123456\"}";
 
-        MvcResult result = mockMvc.perform(post(API_URL)
-                                .content(requestBody)
-                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-                .andDo(print())
-                                  .andExpect(status().isUnauthorized())
-                                  .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
-                                  .andExpect(jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.value())))
-                                  .andExpect(jsonPath("$.error", is("Invalid username / password combination.")))
+        MvcResult result = mockMvc
+                .perform(post(API_URL)
+                                 .content(requestBody)
+                                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+                .andExpect(jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.value())))
+                .andExpect(jsonPath("$.error", is("Invalid username / password combination.")))
                 .andReturn();
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
