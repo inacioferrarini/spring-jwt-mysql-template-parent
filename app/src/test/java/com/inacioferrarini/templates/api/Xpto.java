@@ -3,6 +3,7 @@ package com.inacioferrarini.templates.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import com.inacioferrarini.test.hamcrest.matchers.CustomMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,27 +79,11 @@ public class Xpto {
                                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
                 .andDo(print())
                                   .andExpect(status().isUnauthorized())
-                                  .andExpect(jsonPath("$.timestamp", is(notNullValue())))
+                                  .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
                                   .andExpect(jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.value())))
                                   .andExpect(jsonPath("$.error", is("Invalid username / password combination.")))
                 .andReturn();
-
-        StringErrorResponseRecord response = objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                StringErrorResponseRecord.class
-        );
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(response.timestamp())));
-
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
-    }
-
-    // ---------------------------------------------------------------------------------
-    // Helper Methods
-    // ---------------------------------------------------------------------------------
-
-    private long daysFromNow(final Timestamp timestamp) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        return Duration.between(now.toInstant(), timestamp.toInstant()).toDays();
     }
 
 }
