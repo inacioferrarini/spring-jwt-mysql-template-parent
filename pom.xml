@@ -22,10 +22,18 @@
         <downloadJavadocs>true</downloadJavadocs>
     </properties>
     <modules>
-        <module>commons</module>
+        <!-- App -->
         <module>app</module>
+        <module>commons</module>
+        <module>commons-tests</module>
+        <!-- Security -->
         <module>security</module>
-        <module>security-tests-artifacts</module>
+        <module>security-core</module>
+        <module>security-api</module>
+        <module>security-tests</module>
+        <!-- Sample -->
         <module>sample-feature</module>
+        <!-- Phasing out -->
+        <module>security-tests-artifacts</module>
     </modules>
 </project>

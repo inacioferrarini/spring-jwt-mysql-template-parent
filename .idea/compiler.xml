@@ -8,10 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
-        <module name="sample-feature" />
+        <module name="_security-tests-artifacts" />
+        <module name="commons-tests" />
         <module name="security" />
-        <module name="security-tests" />
+        <module name="security-core" />
         <module name="Commons" />
+        <module name="security-api" />
+        <module name="sample-feature" />
+        <module name="security-tests" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,11 +26,15 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Commons" options="-parameters" />
+      <module name="_security-tests-artifacts" options="-parameters" />
       <module name="app" options="-parameters" />
+      <module name="commons-tests" options="-parameters" />
       <module name="feature" options="-parameters" />
       <module name="jwt" options="-parameters" />
       <module name="sample-feature" options="-parameters" />
       <module name="security" options="-parameters" />
+      <module name="security-api" options="-parameters" />
+      <module name="security-core" options="-parameters" />
       <module name="security-tests" options="-parameters" />
     </option>
   </component>
