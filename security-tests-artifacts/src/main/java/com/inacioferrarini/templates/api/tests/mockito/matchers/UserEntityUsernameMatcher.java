@@ -16,9 +16,14 @@ public class UserEntityUsernameMatcher implements ArgumentMatcher<Example<UserEn
 
     @Override
     public boolean matches(Example<UserEntity> right) {
-        return left != null && left.getProbe() != null && left.getProbe().getUsername() != null
-                && right != null && right.getProbe() != null && right.getProbe().getUsername() != null
-                && left.getProbe().getUsername().equals(right.getProbe().getUsername());
+        if (left == null) return false;
+        left.getProbe();
+        return left.getProbe()
+                   .getUsername() != null && right != null && right.getProbe() != null && right.getProbe()
+                                                                                               .getUsername() != null && left.getProbe()
+                                                                                                                             .getUsername()
+                                                                                                                             .equals(right.getProbe()
+                                                                                                                                          .getUsername());
     }
 
 }
