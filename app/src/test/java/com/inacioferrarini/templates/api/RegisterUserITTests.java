@@ -7,7 +7,6 @@ import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,8 +68,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Test User", Objects.requireNonNull(response.getBody())
-                                         .username());
+        assertEquals("Test User", Objects.requireNonNull(response.getBody()).username());
         assertEquals("test.user@email.com", response.getBody().email());
         assertNotNull(response.getBody().token().token());
         assertEquals(2, response.getBody().token().token().chars().filter(ch -> ch == '.').count());
@@ -99,8 +97,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
         assertEquals("Username is already being used.", response.getBody().error());
         assertEquals(1L, securityTestsHelper.countUsers());
@@ -127,8 +124,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
         assertEquals("Email is already being used.", response.getBody().error());
         assertEquals(1L, securityTestsHelper.countUsers());
@@ -153,8 +149,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -182,8 +177,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -211,8 +205,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -240,8 +233,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -269,8 +261,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
@@ -298,8 +289,7 @@ public class RegisterUserITTests {
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody())
-                                                              .timestamp())));
+        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
         assertEquals(1, response.getBody().error().size());
         ArrayList<String> errorMessages = new ArrayList<>();
