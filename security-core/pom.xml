@@ -11,6 +11,8 @@
     <artifactId>security-core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Security Core</name>
+    <dependencies>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
