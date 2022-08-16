@@ -1,36 +1,38 @@
 package com.inacioferrarini.templates.api;
 
-import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
-import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
-import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import com.inacioferrarini.test.hamcrest.matchers.CustomMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.*;
-
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class RegisterUserITTests {
 
     private static final String API_URL = "/api/security/register";
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Autowired
     private SecurityTestsHelper securityTestsHelper;
@@ -53,53 +55,42 @@ public class RegisterUserITTests {
     // RegisterUser: Success
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_success_mustReturnToken() {
+    public void registerUser_success_mustReturnToken() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<RegisterUserResponseRecord> response = restTemplate.postForEntity(API_URL, entity, RegisterUserResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Test User", Objects.requireNonNull(response.getBody()).username());
-        assertEquals("test.user@email.com", response.getBody().email());
-        assertNotNull(response.getBody().token().token());
-        assertEquals(2, response.getBody().token().token().chars().filter(ch -> ch == '.').count());
-        assertEquals(29L, daysFromNow(response.getBody().token().validUntil()));
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.username", is("Test User")))
+               .andExpect(jsonPath("$.email", is("test.user@email.com")))
+               .andExpect(jsonPath("$.token.token", is(notNullValue())))
+               .andExpect(jsonPath("$.token.valid_until", is(CustomMatchers.IsDaysFromNowMatcher(29L))))
+               .andDo(print());
         assertEquals(1L, securityTestsHelper.countUsers());
+        assertEquals(1L, securityTestsHelper.countSecurityTokens());
     }
 
     // ---------------------------------------------------------------------------------
     // RegisterUser: Failure: Duplicated Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_duplicatedUsernameFailure_mustReturnError() {
+    public void registerUser_duplicatedUsernameFailure_mustReturnError() throws Exception {
         // Given
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
-        assertEquals("Username is already being used.", response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isConflict())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.CONFLICT.value())))
+               .andExpect(jsonPath("$.error", is("Username is already being used.")));
         assertEquals(1L, securityTestsHelper.countUsers());
     }
 
@@ -107,26 +98,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Duplicated Email
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_duplicatedEmailFailure_mustReturnError() {
+    public void registerUser_duplicatedEmailFailure_mustReturnError() throws Exception {
         // Given
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User 2\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.CONFLICT.value(), response.getBody().status());
-        assertEquals("Email is already being used.", response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isConflict())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.CONFLICT.value())))
+               .andExpect(jsonPath("$.error", is("Email is already being used.")));
         assertEquals(1L, securityTestsHelper.countUsers());
     }
 
@@ -134,27 +119,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Empty Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_emptyUsernameFailure_mustReturnError() {
+    public void registerUser_emptyUsernameFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"\",\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Username is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Username is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
     }
 
@@ -162,27 +140,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Absent Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_absentUsernameFailure_mustReturnError() {
+    public void registerUser_absentUsernameFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"email\":\"test.user@email.com\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Username is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Username is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
     }
 
@@ -190,27 +161,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Empty Email
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_emptyEmailFailure_mustReturnError() {
+    public void registerUser_emptyEmailFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Email is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Email is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
     }
 
@@ -218,27 +182,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Absent Email
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_absentEmailFailure_mustReturnError() {
+    public void registerUser_absentEmailFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Email is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Email is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
     }
 
@@ -246,27 +203,20 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Empty Password
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_emptyPasswordFailure_mustReturnError() {
+    public void registerUser_emptyPasswordFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\",\"password\":\"\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Password is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Password is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
     }
 
@@ -274,38 +224,21 @@ public class RegisterUserITTests {
     // RegisterUser: Failure: Absent Password
     // ---------------------------------------------------------------------------------
     @Test
-    public void registerUser_absentPasswordFailure_mustReturnError() {
+    public void registerUser_absentPasswordFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"email\":\"test.user@email.com\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Password is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Password is required.")));
         assertEquals(0L, securityTestsHelper.countUsers());
-    }
-
-    // ---------------------------------------------------------------------------------
-    // Helper Methods
-    // ---------------------------------------------------------------------------------
-
-    // Mover para Test Utils
-    private long daysFromNow(final Timestamp timestamp) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        return Duration.between(now.toInstant(), timestamp.toInstant()).toDays();
     }
 
 }

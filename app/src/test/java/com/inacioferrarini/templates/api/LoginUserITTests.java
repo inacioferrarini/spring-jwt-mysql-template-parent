@@ -1,36 +1,37 @@
 package com.inacioferrarini.templates.api;
 
-import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
-import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
-import com.inacioferrarini.templates.api.security.models.dtos.LoginUserResponseRecord;
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
+import com.inacioferrarini.test.hamcrest.matchers.CustomMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.*;
-
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class LoginUserITTests {
 
     private static final String API_URL = "/api/security/login";
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Autowired
     private SecurityTestsHelper securityTestsHelper;
@@ -53,26 +54,19 @@ public class LoginUserITTests {
     // Login: Success
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_success_mustReturnToken() {
+    public void login_success_mustReturnToken() throws Exception {
         // Given
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<LoginUserResponseRecord> response = restTemplate.postForEntity(API_URL, entity, LoginUserResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(Objects.requireNonNull(response.getBody()).token());
-        assertEquals(2, response.getBody().token().chars().filter(ch -> ch == '.').count());
-        assertEquals(29L, daysFromNow(response.getBody().validUntil()));
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.token", is(notNullValue())))
+               .andExpect(jsonPath("$.valid_until", is(CustomMatchers.IsDaysFromNowMatcher(29L))));
         assertEquals(1L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -80,26 +74,20 @@ public class LoginUserITTests {
     // Login: Failure: Wrong Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_wrongUsernameFailure_mustReturnError() {
+    public void login_wrongUsernameFailure_mustReturnError() throws Exception {
         // Given
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Teste User 2\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
-        assertEquals("Username is already being used.", response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isUnauthorized())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.value())))
+               .andExpect(jsonPath("$.error", is("Invalid username / password combination.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -107,26 +95,20 @@ public class LoginUserITTests {
     // Login: Failure: Wrong Password
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_wrongPasswordFailure_mustReturnError() {
+    public void login_wrongPasswordFailure_mustReturnError() throws Exception {
         // Given
         securityTestsHelper.createTestUser();
 
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"123456\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getBody().status());
-        assertEquals("Username is already being used.", response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isUnauthorized())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.value())))
+               .andExpect(jsonPath("$.error", is("Invalid username / password combination.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -134,27 +116,20 @@ public class LoginUserITTests {
     // Login: Failure: Empty Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_emptyUsernameFailure_mustReturnError() {
+    public void login_emptyUsernameFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"\",\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Username is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Username is required.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -162,27 +137,20 @@ public class LoginUserITTests {
     // Login: Failure: Absent Username
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_absentUsernameFailure_mustReturnError() {
+    public void login_absentUsernameFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"password\":\"1234\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Username is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Username is required.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -190,27 +158,20 @@ public class LoginUserITTests {
     // Login: Failure: Empty Password
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_emptyPasswordFailure_mustReturnError() {
+    public void login_emptyPasswordFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\",\"password\":\"\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Password is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Password is required.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
     }
 
@@ -218,37 +179,21 @@ public class LoginUserITTests {
     // Login: Failure: Absent Password
     // ---------------------------------------------------------------------------------
     @Test
-    public void login_absentPasswordFailure_mustReturnError() {
+    public void login_absentPasswordFailure_mustReturnError() throws Exception {
         // Given
         final String requestBody = "{\"username\":\"Test User\"}";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // When
-        ResponseEntity<StringListErrorResponseRecord> response = restTemplate.postForEntity(API_URL, entity, StringListErrorResponseRecord.class);
-
-        // Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(0L, daysFromNow(Timestamp.valueOf(Objects.requireNonNull(response.getBody()).timestamp())));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getBody().status());
-        assertEquals(1, response.getBody().error().size());
-        ArrayList<String> errorMessages = new ArrayList<>();
-        errorMessages.add("Password is required.");
-        assertEquals(errorMessages, response.getBody().error());
+        mockMvc.perform(post(API_URL)
+                                .content(requestBody)
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$.timestamp", is(CustomMatchers.IsDaysFromNowMatcher(0L))))
+               .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+               .andExpect(jsonPath("$.errors").isArray())
+               .andExpect(jsonPath("$.errors", hasSize(1)))
+               .andExpect(jsonPath("$.errors", hasItem("Password is required.")));
         assertEquals(0L, securityTestsHelper.countSecurityTokens());
-    }
-
-    // ---------------------------------------------------------------------------------
-    // Helper Methods
-    // ---------------------------------------------------------------------------------
-
-    private long daysFromNow(final Timestamp timestamp) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        return Duration.between(now.toInstant(), timestamp.toInstant()).toDays();
     }
 
 }

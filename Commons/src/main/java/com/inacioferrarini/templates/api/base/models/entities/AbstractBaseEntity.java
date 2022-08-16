@@ -16,13 +16,13 @@ public abstract class AbstractBaseEntity {
 
     @PrePersist
     public void onInsert() {
-        createdAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
+        createdAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toInstant());
         updatedAt = createdAt;
     }
 
     @PreUpdate
     public void onUpdate() {
-        updatedAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).toInstant());
+        updatedAt = Timestamp.from(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toInstant());
     }
 
 }

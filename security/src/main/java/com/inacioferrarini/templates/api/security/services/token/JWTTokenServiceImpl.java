@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -98,10 +97,13 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
         return now.toDate();
     }
 
-    private Timestamp createValidDate(final int days) {
-        Calendar calendar = Calendar.getInstance();
+    private LocalDateTime createValidDate(final int days) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
         calendar.add(Calendar.DATE, days);
-        return new Timestamp(calendar.getTimeInMillis());
+        return LocalDateTime.ofInstant(
+                calendar.toInstant(),
+                calendar.getTimeZone().toZoneId()
+        );
     }
 
 }

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PACKAGE;
@@ -68,7 +69,7 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
         SecurityTokenEntity tokenEntity = new SecurityTokenEntity();
         tokenEntity.setOwner(userEntity);
         tokenEntity.setToken(tokenDataRecord.token());
-        tokenEntity.setValidUntil(tokenDataRecord.validUntil());
+        tokenEntity.setValidUntil(Timestamp.valueOf(tokenDataRecord.validUntil()));
 
         securityTokenRepository.save(tokenEntity);
 

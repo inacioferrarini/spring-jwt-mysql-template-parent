@@ -6,7 +6,7 @@ import java.util.List;
 public record StringListErrorResponseRecord(
         LocalDateTime timestamp,
         int status,
-        List<String> error
+        List<String> errors
 ) {
 
 }
