@@ -33,7 +33,7 @@ curl --location -i --request POST 'http://localhost:8080/api/security/login' \
 ------------------------------------------------------------------------------
 curl --location -i --request GET 'http://localhost:8080/protected' \
 --header 'Accept: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLyy_PL8pJUdJRykwsUbIyNDO1NDY1sDQw1VEqLU4tykvMTQWq88xLTM7MV6oFAPWXgEc4AAAA.O2wdeHBT-LoqwltgnJJflXcbgoQLg5tavbHzzmGcbVE'
+--header 'Authorization: Bearer <token>'
 
 # Usage
 
