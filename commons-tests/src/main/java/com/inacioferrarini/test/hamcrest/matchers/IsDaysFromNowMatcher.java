@@ -28,7 +28,7 @@ public class IsDaysFromNowMatcher extends TypeSafeMatcher<String> {
             Timestamp now = new Timestamp(new Date().getTime());
             Long duration = Duration.between(now.toInstant(), parsedTimestamp.toInstant()).toDays();
             parsedDuration = duration;
-            return duration == days;
+            return duration.equals(days);
         } catch (ParseException exception) {
             return false;
         }
