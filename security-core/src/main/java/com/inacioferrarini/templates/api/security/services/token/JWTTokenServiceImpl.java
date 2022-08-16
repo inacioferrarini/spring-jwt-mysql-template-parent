@@ -33,7 +33,7 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
                 resource.getString("jwt.issuer")
         );
         logger.debug("JWT Token Issuer: {}", this.issuer);
-        this.secretKey = BASE64.encode(
+        this.secretKey = TextCodec.BASE64.encode(
                 requireNonNull(resource.getString("jwt.secretKeySeed"))
         );
     }
@@ -65,7 +65,7 @@ final class JWTTokenServiceImpl implements Clock, TokenService {
         final String token = Jwts.builder()
                                  .setClaims(claims)
                                  .signWith(
-                                         HS256,
+                                         SignatureAlgorithm.HS256,
                                          secretKey
                                  )
                                  .compressWith(COMPRESSION_CODEC)
