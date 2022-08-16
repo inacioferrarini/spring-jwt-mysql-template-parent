@@ -54,11 +54,9 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
 
         UserEntity userEntity = userRepository
                 .findOne(userExample)
-                .filter(user -> {
-                    return passwordEncoderService.matches(
-                            password, user.getPasswordHash()
-                    );
-                }).orElseThrow(
+                .filter(user -> passwordEncoderService.matches(
+                        password, user.getPasswordHash()
+                )).orElseThrow(
                         InvalidUserCredentialsException::new
                 );
 

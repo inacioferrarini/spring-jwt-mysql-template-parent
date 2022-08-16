@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public class IsDaysFromNowMatcher extends TypeSafeMatcher<String> {
 
-    private Long days;
-    private Optional<Long> parsedDifference = Optional.empty();
+    final private Long days;
+    private Long parsedDuration;
 
     public IsDaysFromNowMatcher(Long days) {
         this.days = days;
@@ -27,7 +27,7 @@ public class IsDaysFromNowMatcher extends TypeSafeMatcher<String> {
 
             Timestamp now = new Timestamp(new Date().getTime());
             Long duration = Duration.between(now.toInstant(), parsedTimestamp.toInstant()).toDays();
-            parsedDifference = Optional.of(duration);
+            parsedDuration = duration;
             return duration == days;
         } catch (ParseException exception) {
             return false;
@@ -36,13 +36,10 @@ public class IsDaysFromNowMatcher extends TypeSafeMatcher<String> {
 
     @Override
     public void describeTo(Description description) {
+        Optional<Long> parsedDifference = Optional.of(this.parsedDuration);
         parsedDifference.ifPresentOrElse(
-                (value) -> {
-                    description.appendText("" + value + " days");
-                },
-                () -> {
-                    description.appendText("" + this.days + " days");
-                }
+                (value) -> description.appendText("" + value + " days"),
+                () -> description.appendText("" + this.days + " days")
         );
     }
 

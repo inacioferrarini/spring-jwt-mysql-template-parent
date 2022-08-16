@@ -2,12 +2,16 @@ package com.inacioferrarini.templates.api.security.models.entities;
 
 import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity(name = "security_token")
 @Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class SecurityTokenEntity extends AbstractBaseEntity {
 
     @Id
