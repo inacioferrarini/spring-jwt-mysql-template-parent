@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.security.models;
+package com.inacioferrarini.templates.api.security.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

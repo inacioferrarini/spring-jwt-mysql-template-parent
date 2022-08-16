@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.controllers.api;
 
-import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserRequestRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.RegisterUserResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;

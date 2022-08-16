@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.services.authentication;
 
-import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 
 import java.util.Optional;

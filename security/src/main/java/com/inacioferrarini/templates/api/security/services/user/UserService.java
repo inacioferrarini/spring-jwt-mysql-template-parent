@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.services.user;
 
-import com.inacioferrarini.templates.api.security.models.UserDTO;
+import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 
 import java.util.Optional;
 
