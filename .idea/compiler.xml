@@ -8,9 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
-        <module name="_security-tests-artifacts" />
         <module name="commons-tests" />
-        <module name="security" />
         <module name="security-core" />
         <module name="Commons" />
         <module name="security-api" />
@@ -19,8 +17,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="_security-tests-artifacts" target="18" />
       <module name="feature" target="18" />
       <module name="jwt" target="18" />
+      <module name="security" target="18" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
