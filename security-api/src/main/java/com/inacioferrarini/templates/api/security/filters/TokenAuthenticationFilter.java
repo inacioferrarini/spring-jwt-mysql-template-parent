@@ -1,5 +1,6 @@
 package com.inacioferrarini.templates.api.security.filters;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +17,6 @@ import java.io.IOException;
 
 import static com.google.common.net.HttpHeaders.AUTHORIZATION;
 import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public final class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -33,7 +33,7 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
     ) {
         final String param = request.getHeader(AUTHORIZATION);
         final String token = ofNullable(param)
-                .map(value -> removeStart(
+                .map(value -> StringUtils.removeStart(
                              value,
                              "Bearer"
                      )

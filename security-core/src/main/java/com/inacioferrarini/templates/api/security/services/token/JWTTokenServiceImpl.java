@@ -3,6 +3,7 @@ package com.inacioferrarini.templates.api.security.services.token;
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.TextCodec;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -13,8 +14,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.jsonwebtoken.SignatureAlgorithm.HS256;
-import static io.jsonwebtoken.impl.TextCodec.BASE64;
 import static java.util.Objects.requireNonNull;
 
 @Service
