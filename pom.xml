@@ -31,6 +31,7 @@
         <module>security-api</module>
         <module>security-tests</module>
         <!-- Sample -->
-        <module>sample-feature</module>
+        <module>sample-feature-api</module>
+        <module>sample-feature-core</module>
     </modules>
 </project>

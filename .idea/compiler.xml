@@ -8,11 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
+        <module name="sample-feature-core" />
         <module name="commons-tests" />
         <module name="security-core" />
+        <module name="sample-feature-api" />
         <module name="Commons" />
         <module name="security-api" />
-        <module name="sample-feature" />
         <module name="security-tests" />
       </profile>
     </annotationProcessing>
@@ -20,6 +21,7 @@
       <module name="_security-tests-artifacts" target="18" />
       <module name="feature" target="18" />
       <module name="jwt" target="18" />
+      <module name="sample-feature" target="18" />
       <module name="security" target="18" />
     </bytecodeTargetLevel>
   </component>
@@ -32,6 +34,8 @@
       <module name="feature" options="-parameters" />
       <module name="jwt" options="-parameters" />
       <module name="sample-feature" options="-parameters" />
+      <module name="sample-feature-api" options="-parameters" />
+      <module name="sample-feature-core" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="security-api" options="-parameters" />
       <module name="security-core" options="-parameters" />
