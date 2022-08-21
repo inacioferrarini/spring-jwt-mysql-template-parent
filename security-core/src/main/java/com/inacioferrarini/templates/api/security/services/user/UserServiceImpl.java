@@ -6,10 +6,8 @@ import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
 import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -37,65 +35,20 @@ final class UserServiceImpl implements UserService {
                 });
 
         final String encodedPassword = passwordEncoderService.encode(user.getPassword());
-        final UserEntity userEntity = new UserEntity(
-                user.getUsername(),
-                user.getEmail(),
-                encodedPassword,
-                new HashSet<>(),
-                user.isAccountNonExpired(),
-                user.isAccountNonLocked(),
-                user.isCredentialsNonExpired(),
-                user.isEnabled()
-        );
+        final UserEntity userEntity = UserEntity.from(user);
         userRepository.save(userEntity);
     }
 
-    public Optional<UserDTO> findById(String id) {
-        UserEntity searchUserEntity = new UserEntity();
-        searchUserEntity.setUsername(id);
-        Example<UserEntity> userExample = Example.of(searchUserEntity);
-
-        return userRepository
-                .findAll(userExample)
-                .stream()
-                .map(userEntity -> new UserDTO(
-                        userEntity.getUsername(),
-                        userEntity.getEmail(),
-                        userEntity.getPasswordHash()
-                ))
-                .findFirst();
-    }
-
     public Optional<UserDTO> findByUsername(String username) {
-        UserEntity searchUserEntity = new UserEntity();
-        searchUserEntity.setUsername(username);
-        Example<UserEntity> userExample = Example.of(searchUserEntity);
-
-        return userRepository
-                .findAll(userExample)
-                .stream()
-                .map(userEntity -> new UserDTO(
-                        userEntity.getUsername(),
-                        userEntity.getEmail(),
-                        userEntity.getPasswordHash()
-                ))
-                .findFirst();
+        return userRepository.
+                findByUsername(username)
+                .map(UserDTO::from);
     }
 
     public Optional<UserDTO> findByEmail(String email) {
-        UserEntity searchUserEntity = new UserEntity();
-        searchUserEntity.setEmail(email);
-        Example<UserEntity> userExample = Example.of(searchUserEntity);
-
-        return userRepository
-                .findAll(userExample)
-                .stream()
-                .map(userEntity -> new UserDTO(
-                        userEntity.getUsername(),
-                        userEntity.getEmail(),
-                        userEntity.getPasswordHash()
-                ))
-                .findFirst();
+        return userRepository.
+                findByEmail(email)
+                .map(UserDTO::from);
     }
 
 }

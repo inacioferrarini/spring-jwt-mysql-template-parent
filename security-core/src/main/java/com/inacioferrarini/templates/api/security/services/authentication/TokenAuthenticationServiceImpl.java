@@ -2,14 +2,15 @@ package com.inacioferrarini.templates.api.security.services.authentication;
 
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
-import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
+import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import com.inacioferrarini.templates.api.security.repositories.SecurityTokenRepository;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
 import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
 import com.inacioferrarini.templates.api.security.services.token.TokenService;
+import com.inacioferrarini.templates.api.security.services.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userservice;
+
+    @Autowired
     private SecurityTokenRepository securityTokenRepository;
 
     @Autowired
@@ -56,7 +60,8 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
                 .findOne(userExample)
                 .filter(user -> passwordEncoderService.matches(
                         password, user.getPasswordHash()
-                )).orElseThrow(
+                ))
+                .orElseThrow(
                         InvalidUserCredentialsException::new
                 );
 
@@ -76,13 +81,11 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
 
     @Override
     public Optional<UserDTO> findByToken(final String token) {
-//        // TODO: replace by repository usage
-//        logger.debug("findByToken: {}", token);
-//        return Optional
-//                .of(tokenService.verify(token))
-//                .map(map -> map.get("username"))
-//                .flatMap(userService::findByUsername);
-        return null;
+        logger.debug("findByToken: {}", token);
+        return Optional
+                .of(tokenService.verify(token))
+                .map(map -> map.get("username"))
+                .flatMap(userservice::findByUsername);
     }
 
     @Override

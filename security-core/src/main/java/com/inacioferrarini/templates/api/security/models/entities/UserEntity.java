@@ -1,11 +1,15 @@
 package com.inacioferrarini.templates.api.security.models.entities;
 
 import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
+import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "user")
@@ -60,6 +64,19 @@ public class UserEntity extends AbstractBaseEntity {
         this.nonLocked = nonLocked;
         this.credentialsNotExpired = credentialsNotExpired;
         this.enabled = enabled;
+    }
+
+    public static UserEntity from(UserDTO user) {
+        return new UserEntity(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                new HashSet<SecurityTokenEntity>(),
+                user.isAccountNonExpired(),
+                user.isAccountNonLocked(),
+                user.isCredentialsNonExpired(),
+                user.isEnabled()
+        );
     }
 
 }

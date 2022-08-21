@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MyController {
 
+    public String getPrincipalName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDTO) authentication.getPrincipal();
+        return userDetails.getUsername();
+    }
+
     @GetMapping({"/public"})
     public String publicEndpoint() {
         return "Public Endpoint Response";

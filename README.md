@@ -35,6 +35,12 @@ curl --location -i --request GET 'http://localhost:8080/protected' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer <token>'
 
+
+
+curl --location -i --request GET 'http://localhost:8080/api/sample/books' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzSwsARiHaXS4tSivMTcVKAOT7AOpVoAY-WClEIAAAA.xrRLFtjjYu6gjQYGjZdMb1C5nj-ti_3tbxcCJWDtEug'
+
 # Usage
 
 

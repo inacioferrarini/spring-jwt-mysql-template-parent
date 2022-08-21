@@ -1,6 +1,7 @@
 package com.inacioferrarini.templates.api.security.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +22,19 @@ public class UserDTO implements UserDetails {
     private final Boolean accountNonLocked;
     private final Boolean credentialsNonExpired;
     private final Boolean enabled;
+
+    public static UserDTO from(UserEntity userEntity) {
+        return new UserDTO(
+                userEntity.getUsername(),
+                userEntity.getEmail(),
+                null,
+                new ArrayList<>(),
+                userEntity.getNonExpired(),
+                userEntity.getNonLocked(),
+                userEntity.getCredentialsNotExpired(),
+                userEntity.getEnabled()
+        );
+    }
 
     public UserDTO(
             String username,

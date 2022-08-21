@@ -1,7 +1,7 @@
 package com.inacioferrarini.templates.api.security.controllers.api;
 
-import com.inacioferrarini.templates.api.security.models.dtos.LoginUserRequestRecord;
-import com.inacioferrarini.templates.api.security.models.dtos.LoginUserResponseRecord;
+import com.inacioferrarini.templates.api.security.models.records.LoginUserRequestRecord;
+import com.inacioferrarini.templates.api.security.models.records.LoginUserResponseRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.services.authentication.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;

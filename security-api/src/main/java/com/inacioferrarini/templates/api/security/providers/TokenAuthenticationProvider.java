@@ -29,12 +29,11 @@ public final class TokenAuthenticationProvider extends AbstractUserDetailsAuthen
             final UsernamePasswordAuthenticationToken authentication
     ) {
         final Object token = authentication.getCredentials();
-        // TODO: Desconfio que este método é usado para saber quem é o usuário a quem
-        // o token pertence.
         return Optional.ofNullable(token)
                        .map(String::valueOf)
                        .flatMap(authenticationService::findByToken)
                        .orElseThrow(
+                               // TODO: Change exception
                                () -> new UsernameNotFoundException("Couldn't find user: " + token)
                        );
     }
