@@ -2,10 +2,10 @@ package com.inacioferrarini.templates.api.security.services.authentication;
 
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
-import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
+import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.repositories.SecurityTokenRepository;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
 import com.inacioferrarini.templates.api.security.services.security.PasswordEncoderService;
@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -52,15 +51,11 @@ class TokenAuthenticationServiceImpl implements UserAuthenticationService {
             final String username,
             final String password
     ) {
-        UserEntity searchUserEntity = new UserEntity();
-        searchUserEntity.setUsername(username);
-        Example<UserEntity> userExample = Example.of(searchUserEntity);
-
         UserEntity userEntity = userRepository
-                .findOne(userExample)
+                .findByUsername(username)
                 .filter(user -> passwordEncoderService.matches(
-                        password, user.getPasswordHash()
-                ))
+                                password, user.getPasswordHash()
+                        ))
                 .orElseThrow(
                         InvalidUserCredentialsException::new
                 );

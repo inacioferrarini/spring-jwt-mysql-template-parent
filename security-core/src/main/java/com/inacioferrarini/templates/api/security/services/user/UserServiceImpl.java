@@ -36,6 +36,8 @@ final class UserServiceImpl implements UserService {
 
         final String encodedPassword = passwordEncoderService.encode(user.getPassword());
         final UserEntity userEntity = UserEntity.from(user);
+        userEntity.setPasswordHash(encodedPassword);
+
         userRepository.save(userEntity);
     }
 
