@@ -1,0 +1,10 @@
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/records/LoginUserRequestRecord.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/records/RegisterUserRequestRecord.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/records/LoginUserResponseRecord.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/navigation/NoRedirectStrategy.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/filters/TokenAuthenticationFilter.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/LoginController.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/configuration/SecurityConfiguration.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/RegisterController.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/providers/TokenAuthenticationProvider.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-api/src/main/java/com/inacioferrarini/templates/api/security/controllers/api/records/RegisterUserResponseRecord.java

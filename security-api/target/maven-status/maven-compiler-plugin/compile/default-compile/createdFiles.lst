@@ -1,0 +1,10 @@
+com/inacioferrarini/templates/api/security/controllers/api/records/RegisterUserRequestRecord.class
+com/inacioferrarini/templates/api/security/filters/TokenAuthenticationFilter.class
+com/inacioferrarini/templates/api/security/controllers/api/RegisterController.class
+com/inacioferrarini/templates/api/security/controllers/api/records/LoginUserResponseRecord.class
+com/inacioferrarini/templates/api/security/controllers/api/records/RegisterUserResponseRecord.class
+com/inacioferrarini/templates/api/security/controllers/api/LoginController.class
+com/inacioferrarini/templates/api/security/navigation/NoRedirectStrategy.class
+com/inacioferrarini/templates/api/security/controllers/api/records/LoginUserRequestRecord.class
+com/inacioferrarini/templates/api/security/configuration/SecurityConfiguration.class
+com/inacioferrarini/templates/api/security/providers/TokenAuthenticationProvider.class

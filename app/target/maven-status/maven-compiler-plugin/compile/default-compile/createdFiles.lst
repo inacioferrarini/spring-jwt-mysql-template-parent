@@ -1,1 +1,2 @@
 com/inacioferrarini/templates/api/JwtApplication.class
+com/inacioferrarini/templates/api/errors/advices/CustomGlobalExceptionHandler.class
