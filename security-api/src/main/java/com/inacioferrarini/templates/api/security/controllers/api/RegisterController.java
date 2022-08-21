@@ -1,8 +1,8 @@
 package com.inacioferrarini.templates.api.security.controllers.api;
 
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
-import com.inacioferrarini.templates.api.security.models.records.RegisterUserRequestRecord;
-import com.inacioferrarini.templates.api.security.models.records.RegisterUserResponseRecord;
+import com.inacioferrarini.templates.api.security.controllers.api.records.RegisterUserRequestRecord;
+import com.inacioferrarini.templates.api.security.controllers.api.records.RegisterUserResponseRecord;
 import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.services.authentication.UserAuthenticationService;
 import com.inacioferrarini.templates.api.security.services.user.UserService;

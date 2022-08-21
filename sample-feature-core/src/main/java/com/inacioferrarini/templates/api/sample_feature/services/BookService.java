@@ -4,6 +4,6 @@ import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecor
 
 public interface BookService {
 
-    void create(BookRecord book);
+    BookRecord create(BookRecord book);
 
 }

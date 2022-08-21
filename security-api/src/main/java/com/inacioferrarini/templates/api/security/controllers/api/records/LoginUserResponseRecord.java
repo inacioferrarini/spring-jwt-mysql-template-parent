@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.security.models.records;
+package com.inacioferrarini.templates.api.security.controllers.api.records;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
