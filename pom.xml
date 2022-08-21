@@ -24,7 +24,10 @@
     <modules>
         <!-- App -->
         <module>app</module>
+        <!-- Commons -->
         <module>commons</module>
+        <module>commons-core</module>
+        <module>commons-api</module>
         <module>commons-tests</module>
         <!-- Security -->
         <module>security-core</module>
