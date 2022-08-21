@@ -7,6 +7,4 @@ import java.time.LocalDateTime;
 public record LoginUserResponseRecord(
         String token,
         @JsonProperty("valid_until") LocalDateTime timestamp
-) {
-
-}
+) { }

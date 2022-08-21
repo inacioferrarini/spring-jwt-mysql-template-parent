@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.services.token;
 
-import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
+import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 
 import java.util.Map;
 

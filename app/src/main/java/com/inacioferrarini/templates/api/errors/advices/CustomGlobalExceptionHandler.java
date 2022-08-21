@@ -1,7 +1,7 @@
 package com.inacioferrarini.templates.api.errors.advices;
 
-import com.inacioferrarini.templates.api.base.models.dtos.StringErrorResponseRecord;
-import com.inacioferrarini.templates.api.base.models.dtos.StringListErrorResponseRecord;
+import com.inacioferrarini.templates.api.base.models.records.StringErrorResponseRecord;
+import com.inacioferrarini.templates.api.base.models.records.StringListErrorResponseRecord;
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;

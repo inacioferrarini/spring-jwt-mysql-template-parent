@@ -2,7 +2,7 @@ package com.inacioferrarini.templates.api.security.services.authentication;
 
 import com.google.common.collect.ImmutableMap;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
-import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
+import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.SecurityTokenEntity;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;

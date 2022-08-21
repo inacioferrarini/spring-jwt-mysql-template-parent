@@ -1,7 +1,7 @@
 package com.inacioferrarini.templates.api.security.services.token;
 
 import com.google.common.collect.ImmutableMap;
-import com.inacioferrarini.templates.api.security.models.dtos.TokenDataRecord;
+import com.inacioferrarini.templates.api.security.models.records.TokenDataRecord;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.TextCodec;
 import io.jsonwebtoken.impl.compression.GzipCompressionCodec;

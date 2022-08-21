@@ -1,11 +1,9 @@
 package com.inacioferrarini.templates.api.sample_feature.services;
 
-import com.inacioferrarini.templates.api.sample_feature.models.dtos.BookRecord;
+import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
 import com.inacioferrarini.templates.api.sample_feature.repositories.BookRepository;
-import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import com.inacioferrarini.templates.api.security.repositories.UserRepository;
-import com.inacioferrarini.templates.api.security.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -33,23 +33,15 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
     ) {
         final String param = request.getHeader(AUTHORIZATION);
         final String token = ofNullable(param)
-                .map(value -> StringUtils.removeStart(
-                             value,
-                             "Bearer"
-                     )
-                )
+                .map(value -> StringUtils.removeStart(value, "Bearer"))
                 .map(String::trim)
                 .orElseThrow(
-                        () -> new BadCredentialsException("No Token Found!") // TODO: Handle this
+                        // TODO: Change Exception
+                        () -> new BadCredentialsException("No Token Found!")
                 );
 
-        final Authentication auth = new UsernamePasswordAuthenticationToken(
-                token,
-                token
-        );
-
+        final Authentication auth = new UsernamePasswordAuthenticationToken(token, token);
         logger.debug("auth: {}", auth);
-
         return getAuthenticationManager().authenticate(auth);
     }
 
@@ -60,16 +52,8 @@ public final class TokenAuthenticationFilter extends AbstractAuthenticationProce
             final FilterChain chain,
             final Authentication authResult
     ) throws IOException, ServletException {
-        super.successfulAuthentication(
-                request,
-                response,
-                chain,
-                authResult
-        );
-        chain.doFilter(
-                request,
-                response
-        );
+        super.successfulAuthentication(request, response, chain, authResult);
+        chain.doFilter(request, response);
     }
 
 }
