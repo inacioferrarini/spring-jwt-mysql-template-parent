@@ -10,8 +10,6 @@ import com.inacioferrarini.templates.api.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +22,8 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private UserRepository userRepository;
 
-    public BookRecord create(BookRecord book) {
-        Optional<UserEntity> userEntity = userRepository.findByUsername(book.owner()
-                                                                            .getUsername());
+    public BookRecord save(BookRecord book) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(book.owner().getUsername());
         userEntity.orElseThrow(InvalidUserCredentialsException::new);
 
         BookEntity bookEntity = BookEntity.from(book);
@@ -61,6 +58,19 @@ public class BookServiceImpl implements BookService {
                 .findFirst();
 
         return book;
+    }
+
+    public void delete(UserDTO owner, Long id) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(owner.getUsername());
+        userEntity.orElseThrow(InvalidUserCredentialsException::new);
+
+        Optional<BookEntity> bookEntity = bookRepository
+                .findByOwnerAndId(userEntity.get(), id);
+        if (bookEntity.isEmpty()) {
+            return;
+        }
+
+        bookRepository.delete(bookEntity.get());
     }
 
 }

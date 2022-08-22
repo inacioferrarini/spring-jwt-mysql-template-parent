@@ -24,20 +24,6 @@ public class BookController {
     @Autowired
     AuthenticatedUser authenticatedUser;
 
-//    @GetMapping("/api/sample/books")
-//    public void findAll() {
-//        // TODO: Add requireNonNull
-//
-//        BookRecord bookRecord = new BookRecord(
-//                null,
-//                authenticatedUser.getRequestAuthor(),
-//                "book",
-//                "teste",
-//                10.0
-//        );
-//        bookService.create(bookRecord);
-//    }
-
     @GetMapping("/api/sample/books")
     ResponseEntity<List<BookDataResponseRecord>> findAll() {
         List<BookRecord> bookList = bookService
@@ -71,35 +57,45 @@ public class BookController {
                 bookDataRequestRecord.author(),
                 bookDataRequestRecord.price()
         );
-        BookRecord createdBook = bookService.create(bookRecord);
+        BookRecord createdBook = bookService.save(bookRecord);
         BookDataResponseRecord response = BookDataResponseRecord.from(createdBook);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-//    // Update
-//    // Save or update
-//    @PutMapping("/books/{id}")
-//    Book saveOrUpdate(@RequestBody Book newBook, @PathVariable Long id) {
-//
-//        return repository.findById(id)
-//                         .map(x -> {
-//                             x.setName(newBook.getName());
-//                             x.setAuthor(newBook.getAuthor());
-//                             x.setPrice(newBook.getPrice());
-//                             return repository.save(x);
-//                         })
-//                         .orElseGet(() -> {
-//                             newBook.setId(id);
-//                             return repository.save(newBook);
-//                         });
-//    }
+    @PutMapping("/api/sample/books/{id}")
+    ResponseEntity<BookDataResponseRecord> update(
+            @Valid @RequestBody BookDataRequestRecord bookDataRequestRecord,
+            @PathVariable Long id
+    ) {
+        Optional<BookRecord> book = bookService
+                .findByOwnerAndId(authenticatedUser.getRequestAuthor(), id);
+        book.orElseThrow(ResourceNotFoundException::new);
 
-    // Delete
-//    @DeleteMapping("/books/{id}")
-//    void deleteBook(@PathVariable Long id) {
-//        repository.deleteById(id);
-//    }
+        BookRecord bookRecord = new BookRecord(
+                id,
+                authenticatedUser.getRequestAuthor(),
+                bookDataRequestRecord.name(),
+                bookDataRequestRecord.author(),
+                bookDataRequestRecord.price()
+        );
+        BookRecord updatedBook = bookService.save(bookRecord);
+        BookDataResponseRecord response = BookDataResponseRecord.from(updatedBook);
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/sample/books/{id}")
+    ResponseEntity<Void> delete(
+            @PathVariable Long id
+    ) {
+        Optional<BookRecord> book = bookService
+                .findByOwnerAndId(authenticatedUser.getRequestAuthor(), id);
+        book.orElseThrow(ResourceNotFoundException::new);
+
+        bookService.delete(authenticatedUser.getRequestAuthor(), id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

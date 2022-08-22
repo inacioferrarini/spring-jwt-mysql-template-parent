@@ -41,7 +41,6 @@ curl --location -i --request GET 'http://localhost:8080/api/sample/books' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzS0MLQwNdVRKi1OLcpLzE0F6vAE6zBSqgUA4ZI1p0MAAAA.nj9da72Ni0HSq3j4AZ8AUmw0xZTlU-tm9w-E23MpuC4'
 
-
 ------------------------------------------------------------------------------
 -- Find By Id
 ------------------------------------------------------------------------------
@@ -50,15 +49,10 @@ curl --location -i --request GET 'http://localhost:8080/api/sample/books/5' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzQ0t7AwM9ZRKi1OLcpLzE0F6vAE61CqBQAVmLbsQgAAAA.ONo-bgXxV2C8qvjlggtxUQblGD65WGecellLUVGKJws'
 
-
 curl --location -i --request GET 'http://localhost:8080/api/sample/books/5' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzS0MLQwNdVRKi1OLcpLzE0F6vAE6zBSqgUA4ZI1p0MAAAA.nj9da72Ni0HSq3j4AZ8AUmw0xZTlU-tm9w-E23MpuC4'
-
-
-
-
 
 ------------------------------------------------------------------------------
 -- Create Book
@@ -68,6 +62,35 @@ curl --location -i --request POST 'http://localhost:8080/api/sample/books' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzQ0t7AwM9ZRKi1OLcpLzE0F6vAE61CqBQAVmLbsQgAAAA.ONo-bgXxV2C8qvjlggtxUQblGD65WGecellLUVGKJws' \
 -d '{"name":"Book Name","author":"Book Author Name","price":10.50}'
+
+------------------------------------------------------------------------------
+-- Update Book
+------------------------------------------------------------------------------
+curl --location -i --request PUT 'http://localhost:8080/api/sample/books/5' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzQ0t7AwM9ZRKi1OLcpLzE0F6vAE61CqBQAVmLbsQgAAAA.ONo-bgXxV2C8qvjlggtxUQblGD65WGecellLUVGKJws' \
+-d '{"name":"Updated Book Name","author":"Updated Book Author Name","price":20.50}'
+
+curl --location -i --request PUT 'http://localhost:8080/api/sample/books/10' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzS0MLQwNdVRKi1OLcpLzE0F6vAE6zBSqgUA4ZI1p0MAAAA.nj9da72Ni0HSq3j4AZ8AUmw0xZTlU-tm9w-E23MpuC4' \
+-d '{"name":"Updated Book Name","author":"Updated Book Author Name","price":20.50}'
+
+------------------------------------------------------------------------------
+-- Delete Book
+------------------------------------------------------------------------------
+curl --location -i --request DELETE 'http://localhost:8080/api/sample/books/10' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzQ0t7AwM9ZRKi1OLcpLzE0F6vAE61CqBQAVmLbsQgAAAA.ONo-bgXxV2C8qvjlggtxUQblGD65WGecellLUVGKJws'
+
+curl --location -i --request DELETE 'http://localhost:8080/api/sample/books/10' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAA_6tWyiwuVrJSysxLTM7MT0stKkosyszL1EvOz1XSUcpMLFGyMjQzMzS0MLQwNdVRKi1OLcpLzE0F6vAE6zBSqgUA4ZI1p0MAAAA.nj9da72Ni0HSq3j4AZ8AUmw0xZTlU-tm9w-E23MpuC4'
+
 
 
 # Usage

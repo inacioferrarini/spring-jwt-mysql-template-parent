@@ -71,11 +71,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Void> handleResourceNotFoundException(
+    public ResponseEntity<StringErrorResponseRecord> handleResourceNotFoundException(
             ResourceNotFoundException ex,
             WebRequest request
     ) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        StringErrorResponseRecord errorResponse = new StringErrorResponseRecord(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                ex.getErrorMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 }
