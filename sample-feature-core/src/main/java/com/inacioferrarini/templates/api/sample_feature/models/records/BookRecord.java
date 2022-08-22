@@ -1,8 +1,10 @@
 package com.inacioferrarini.templates.api.sample_feature.models.records;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.inacioferrarini.templates.api.sample_feature.models.entities.BookEntity;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 
+@JsonPropertyOrder({ "id", "owner", "name", "author", "price" })
 public record BookRecord(
         Long id,
         UserDTO owner,

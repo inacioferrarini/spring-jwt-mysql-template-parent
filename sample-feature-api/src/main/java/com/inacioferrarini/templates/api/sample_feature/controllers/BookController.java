@@ -5,7 +5,6 @@ import com.inacioferrarini.templates.api.sample_feature.controllers.records.Crea
 import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
 import com.inacioferrarini.templates.api.sample_feature.services.BookService;
 import com.inacioferrarini.templates.api.security.components.AuthenticatedUser;
-import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,16 +55,7 @@ public class BookController {
                 createBookRequestRecord.price()
         );
         BookRecord createdBook = bookService.create(bookRecord);
-
-//        Long id,
-//        UserDTO owner,
-//        String name,
-//        String author,
-//        Double price
-
-
-        CreateBookResponseRecord response = new CreateBookResponseRecord(
-        );
+        CreateBookResponseRecord response = CreateBookResponseRecord.from(createdBook);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

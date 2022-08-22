@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity(name = "security_token")
+@Entity(name = "security_tokens")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)

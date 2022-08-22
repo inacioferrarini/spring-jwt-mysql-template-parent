@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity(name = "book")
+@Entity(name = "books")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
