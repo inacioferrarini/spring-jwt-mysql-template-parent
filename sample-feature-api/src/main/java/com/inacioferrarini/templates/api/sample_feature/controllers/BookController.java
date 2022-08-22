@@ -1,18 +1,19 @@
 package com.inacioferrarini.templates.api.sample_feature.controllers;
 
-import com.inacioferrarini.templates.api.sample_feature.controllers.records.CreateBookRequestRecord;
-import com.inacioferrarini.templates.api.sample_feature.controllers.records.CreateBookResponseRecord;
+import com.inacioferrarini.templates.api.errors.exceptions.ResourceNotFoundException;
+import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataRequestRecord;
+import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataResponseRecord;
 import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
 import com.inacioferrarini.templates.api.sample_feature.services.BookService;
 import com.inacioferrarini.templates.api.security.components.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -37,25 +38,41 @@ public class BookController {
 //        bookService.create(bookRecord);
 //    }
 
-    // FindAll
-//    @GetMapping("/books")
-//    List<Book> findAll() {
-//        return repository.findAll();
-//    }
+    @GetMapping("/api/sample/books")
+    ResponseEntity<List<BookDataResponseRecord>> findAll() {
+        List<BookRecord> bookList = bookService
+                .findByOwner(authenticatedUser.getRequestAuthor());
+        List<BookDataResponseRecord> response = bookList
+                .stream()
+                .map(BookDataResponseRecord::from)
+                .toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/sample/books/{id}")
+    ResponseEntity<BookDataResponseRecord> findOne(@PathVariable Long id) {
+        Optional<BookRecord> book = bookService
+                .findByOwnerAndId(authenticatedUser.getRequestAuthor(), id);
+        book.orElseThrow(ResourceNotFoundException::new);
+
+        BookDataResponseRecord response = BookDataResponseRecord.from(book.get());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/api/sample/books")
-    ResponseEntity<CreateBookResponseRecord> create(
-            @Valid @RequestBody CreateBookRequestRecord createBookRequestRecord
+    ResponseEntity<BookDataResponseRecord> create(
+            @Valid @RequestBody BookDataRequestRecord bookDataRequestRecord
     ) {
         BookRecord bookRecord = new BookRecord(
                 null,
                 authenticatedUser.getRequestAuthor(),
-                createBookRequestRecord.name(),
-                createBookRequestRecord.author(),
-                createBookRequestRecord.price()
+                bookDataRequestRecord.name(),
+                bookDataRequestRecord.author(),
+                bookDataRequestRecord.price()
         );
         BookRecord createdBook = bookService.create(bookRecord);
-        CreateBookResponseRecord response = CreateBookResponseRecord.from(createdBook);
+        BookDataResponseRecord response = BookDataResponseRecord.from(createdBook);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

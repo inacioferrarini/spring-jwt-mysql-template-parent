@@ -2,6 +2,7 @@ package com.inacioferrarini.templates.api.errors.advices;
 
 import com.inacioferrarini.templates.api.base.models.records.StringErrorResponseRecord;
 import com.inacioferrarini.templates.api.base.models.records.StringListErrorResponseRecord;
+import com.inacioferrarini.templates.api.errors.exceptions.ResourceNotFoundException;
 import com.inacioferrarini.templates.api.security.errors.exceptions.FieldValueAlreadyInUseException;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -67,6 +68,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 ex.getField().getValidationMessage()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Void> handleResourceNotFoundException(
+            ResourceNotFoundException ex,
+            WebRequest request
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

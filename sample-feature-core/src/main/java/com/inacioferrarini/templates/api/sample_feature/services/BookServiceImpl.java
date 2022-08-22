@@ -10,6 +10,9 @@ import com.inacioferrarini.templates.api.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.awt.print.Book;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +25,8 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
 
     public BookRecord create(BookRecord book) {
-        Optional<UserEntity> userEntity = userRepository.findByUsername(book.owner().getUsername());
+        Optional<UserEntity> userEntity = userRepository.findByUsername(book.owner()
+                                                                            .getUsername());
         userEntity.orElseThrow(InvalidUserCredentialsException::new);
 
         BookEntity bookEntity = BookEntity.from(book);
@@ -31,6 +35,32 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(bookEntity);
 
         return BookRecord.from(bookEntity);
+    }
+
+    public List<BookRecord> findByOwner(UserDTO owner) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(owner.getUsername());
+        userEntity.orElseThrow(InvalidUserCredentialsException::new);
+
+        List<BookRecord> bookList = bookRepository
+                .findByOwner(userEntity.get())
+                .stream()
+                .map(BookRecord::from)
+                .toList();
+
+        return bookList;
+    }
+
+    public Optional<BookRecord> findByOwnerAndId(UserDTO owner, Long id) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(owner.getUsername());
+        userEntity.orElseThrow(InvalidUserCredentialsException::new);
+
+        Optional<BookRecord> book = bookRepository
+                .findByOwnerAndId(userEntity.get(), id)
+                .stream()
+                .map(BookRecord::from)
+                .findFirst();
+
+        return book;
     }
 
 }
