@@ -15,7 +15,7 @@
         <!-- Commons -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>commons-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- Commons: Core -->

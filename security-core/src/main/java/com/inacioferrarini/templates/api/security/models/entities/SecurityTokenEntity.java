@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.security.models.entities;
 
-import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
+import com.inacioferrarini.templates.api.commons.core.models.entities.AbstractBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

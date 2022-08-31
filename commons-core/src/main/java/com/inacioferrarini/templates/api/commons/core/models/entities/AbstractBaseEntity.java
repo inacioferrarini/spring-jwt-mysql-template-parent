@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.base.models.entities;
+package com.inacioferrarini.templates.api.commons.core.models.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

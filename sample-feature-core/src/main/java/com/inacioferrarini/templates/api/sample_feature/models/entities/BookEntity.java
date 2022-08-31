@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.sample_feature.models.entities;
 
-import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
+import com.inacioferrarini.templates.api.commons.core.models.entities.AbstractBaseEntity;
 import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import lombok.Data;

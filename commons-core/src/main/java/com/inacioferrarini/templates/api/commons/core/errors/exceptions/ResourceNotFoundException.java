@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.errors.exceptions;
+package com.inacioferrarini.templates.api.commons.core.errors.exceptions;
 
 import java.util.ResourceBundle;
 

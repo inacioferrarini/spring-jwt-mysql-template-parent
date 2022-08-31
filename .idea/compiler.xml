@@ -12,7 +12,6 @@
         <module name="commons-tests" />
         <module name="security-core" />
         <module name="sample-feature-api" />
-        <module name="Commons" />
         <module name="security-api" />
         <module name="commons-api" />
         <module name="security-tests" />
@@ -21,6 +20,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="_security-tests-artifacts" target="18" />
+      <module name="Commons" target="18" />
       <module name="feature" target="18" />
       <module name="jwt" target="18" />
       <module name="sample-feature" target="18" />

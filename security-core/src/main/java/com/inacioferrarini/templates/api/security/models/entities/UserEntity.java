@@ -1,14 +1,12 @@
 package com.inacioferrarini.templates.api.security.models.entities;
 
-import com.inacioferrarini.templates.api.base.models.entities.AbstractBaseEntity;
+import com.inacioferrarini.templates.api.commons.core.models.entities.AbstractBaseEntity;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 

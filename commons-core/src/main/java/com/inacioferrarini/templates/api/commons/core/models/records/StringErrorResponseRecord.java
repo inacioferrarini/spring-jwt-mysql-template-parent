@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.base.models.records;
+package com.inacioferrarini.templates.api.commons.core.models.records;
 
 import java.time.LocalDateTime;
 

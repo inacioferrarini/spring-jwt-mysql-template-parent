@@ -1,6 +1,6 @@
 package com.inacioferrarini.templates.api.sample_feature.controllers;
 
-import com.inacioferrarini.templates.api.errors.exceptions.ResourceNotFoundException;
+import com.inacioferrarini.templates.api.commons.core.errors.exceptions.ResourceNotFoundException;
 import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataRequestRecord;
 import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataResponseRecord;
 import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
