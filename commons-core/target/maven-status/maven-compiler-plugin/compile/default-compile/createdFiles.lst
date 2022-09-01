@@ -1,0 +1,4 @@
+com/inacioferrarini/templates/api/commons/core/models/records/StringListErrorResponseRecord.class
+com/inacioferrarini/templates/api/commons/core/models/records/StringErrorResponseRecord.class
+com/inacioferrarini/templates/api/commons/core/models/entities/AbstractBaseEntity.class
+com/inacioferrarini/templates/api/commons/core/errors/exceptions/ResourceNotFoundException.class
