@@ -7,10 +7,14 @@ A RESTful endpoint is provided as sample.
 
 # Project Structure
 
-
-
 Start Service:
-mvn -e -U clean spring-boot:run
+$ mvn -e -U clean spring-boot:run
+
+Run Unit tests:
+$ mvn test -Punit-test
+
+Run Integration tests:
+$ mvn test -Pintegration-test
 
 ------------------------------------------------------------------------------
 -- Security: Register

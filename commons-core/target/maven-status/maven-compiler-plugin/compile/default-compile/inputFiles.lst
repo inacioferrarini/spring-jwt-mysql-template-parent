@@ -1,0 +1,4 @@
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/commons-core/src/main/java/com/inacioferrarini/templates/api/commons/core/models/entities/AbstractBaseEntity.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/commons-core/src/main/java/com/inacioferrarini/templates/api/commons/core/models/records/StringListErrorResponseRecord.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/commons-core/src/main/java/com/inacioferrarini/templates/api/commons/core/models/records/StringErrorResponseRecord.java
+/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/commons-core/src/main/java/com/inacioferrarini/templates/api/commons/core/errors/exceptions/ResourceNotFoundException.java

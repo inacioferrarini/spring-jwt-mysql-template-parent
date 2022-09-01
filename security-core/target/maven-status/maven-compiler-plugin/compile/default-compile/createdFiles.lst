@@ -16,5 +16,4 @@ com/inacioferrarini/templates/api/security/errors/exceptions/InvalidUserCredenti
 com/inacioferrarini/templates/api/security/errors/exceptions/FieldValueAlreadyInUseException.class
 com/inacioferrarini/templates/api/security/services/user/UserService.class
 com/inacioferrarini/templates/api/security/services/user/UserServiceImpl.class
-com/inacioferrarini/templates/api/security/errors/ResourceNotFoundException.class
 com/inacioferrarini/templates/api/security/models/records/TokenDataRecord.class

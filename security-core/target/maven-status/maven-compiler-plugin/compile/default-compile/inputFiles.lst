@@ -1,7 +1,6 @@
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/services/authentication/UserAuthenticationService.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/repositories/UserRepository.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/services/user/UserService.java
-/Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/errors/ResourceNotFoundException.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/errors/exceptions/InvalidUserCredentialsException.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/services/user/UserServiceImpl.java
 /Users/inacio.ferrarini/Developer/Java/Apis/spring-jwt-mysql-template-parent/security-core/src/main/java/com/inacioferrarini/templates/api/security/repositories/SecurityTokenRepository.java
