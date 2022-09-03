@@ -1,7 +1,7 @@
-package com.inacioferrarini.templates.api.sample_feature.controllers.records;
+package com.inacioferrarini.templates.api.sample.controllers.records;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
+import com.inacioferrarini.templates.api.sample.models.records.BookRecord;
 
 @JsonPropertyOrder({ "id", "name", "author", "price" })
 public record BookDataResponseRecord(

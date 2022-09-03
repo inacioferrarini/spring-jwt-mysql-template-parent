@@ -1,8 +1,8 @@
-package com.inacioferrarini.templates.api.sample_feature.services;
+package com.inacioferrarini.templates.api.sample.services;
 
-import com.inacioferrarini.templates.api.sample_feature.models.entities.BookEntity;
-import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
-import com.inacioferrarini.templates.api.sample_feature.repositories.BookRepository;
+import com.inacioferrarini.templates.api.sample.models.entities.BookEntity;
+import com.inacioferrarini.templates.api.sample.models.records.BookRecord;
+import com.inacioferrarini.templates.api.sample.repositories.BookRepository;
 import com.inacioferrarini.templates.api.security.errors.exceptions.InvalidUserCredentialsException;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;

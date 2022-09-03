@@ -1,6 +1,6 @@
-package com.inacioferrarini.templates.api.sample_feature.services;
+package com.inacioferrarini.templates.api.sample.services;
 
-import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
+import com.inacioferrarini.templates.api.sample.models.records.BookRecord;
 import com.inacioferrarini.templates.api.security.models.dtos.UserDTO;
 
 import java.util.List;

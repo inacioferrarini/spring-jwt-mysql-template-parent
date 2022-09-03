@@ -1,10 +1,10 @@
-package com.inacioferrarini.templates.api.sample_feature.controllers;
+package com.inacioferrarini.templates.api.sample.controllers;
 
 import com.inacioferrarini.templates.api.commons.core.errors.exceptions.ResourceNotFoundException;
-import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataRequestRecord;
-import com.inacioferrarini.templates.api.sample_feature.controllers.records.BookDataResponseRecord;
-import com.inacioferrarini.templates.api.sample_feature.models.records.BookRecord;
-import com.inacioferrarini.templates.api.sample_feature.services.BookService;
+import com.inacioferrarini.templates.api.sample.controllers.records.BookDataRequestRecord;
+import com.inacioferrarini.templates.api.sample.controllers.records.BookDataResponseRecord;
+import com.inacioferrarini.templates.api.sample.models.records.BookRecord;
+import com.inacioferrarini.templates.api.sample.services.BookService;
 import com.inacioferrarini.templates.api.security.components.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

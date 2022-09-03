@@ -1,6 +1,6 @@
-package com.inacioferrarini.templates.api.sample_feature.repositories;
+package com.inacioferrarini.templates.api.sample.repositories;
 
-import com.inacioferrarini.templates.api.sample_feature.models.entities.BookEntity;
+import com.inacioferrarini.templates.api.sample.models.entities.BookEntity;
 import com.inacioferrarini.templates.api.security.models.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

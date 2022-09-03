@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.sample_feature.controllers.records;
+package com.inacioferrarini.templates.api.sample.controllers.records;
 
 import javax.validation.constraints.NotNull;
 

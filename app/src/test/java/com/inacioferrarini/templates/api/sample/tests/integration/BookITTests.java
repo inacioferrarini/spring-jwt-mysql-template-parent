@@ -1,4 +1,4 @@
-package com.inacioferrarini.templates.api.sample_feature.tests.integration;
+package com.inacioferrarini.templates.api.sample.tests.integration;
 
 import com.inacioferrarini.templates.api.security.tests.SecurityTestsHelper;
 import org.junit.After;
