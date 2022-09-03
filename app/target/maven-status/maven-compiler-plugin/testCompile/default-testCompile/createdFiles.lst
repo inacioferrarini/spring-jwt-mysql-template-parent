@@ -1,2 +1,3 @@
 com/inacioferrarini/templates/api/security/tests/integration/RegisterUserITTests.class
 com/inacioferrarini/templates/api/security/tests/integration/LoginUserITTests.class
+com/inacioferrarini/templates/api/sample_feature/tests/integration/BookITTests.class
