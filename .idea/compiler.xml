@@ -13,6 +13,7 @@
         <module name="security-core" />
         <module name="sample-feature-api" />
         <module name="security-api" />
+        <module name="sample-feature-tests" />
         <module name="commons-api" />
         <module name="security-tests" />
         <module name="commons-core" />
@@ -40,6 +41,7 @@
       <module name="sample-feature" options="-parameters" />
       <module name="sample-feature-api" options="-parameters" />
       <module name="sample-feature-core" options="-parameters" />
+      <module name="sample-feature-tests" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="security-api" options="-parameters" />
       <module name="security-core" options="-parameters" />

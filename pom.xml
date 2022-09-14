@@ -35,6 +35,7 @@
         <!-- Sample -->
         <module>sample-feature-api</module>
         <module>sample-feature-core</module>
+        <module>sample-feature-tests</module>
     </modules>
     <build>
         <plugins>

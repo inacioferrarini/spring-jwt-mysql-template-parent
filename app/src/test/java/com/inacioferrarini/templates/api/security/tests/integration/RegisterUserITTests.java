@@ -40,7 +40,6 @@ public class RegisterUserITTests {
     // ---------------------------------------------------------------------------------
     // Setup
     // ---------------------------------------------------------------------------------
-
     @Before
     public void before() {
         securityTestsHelper.deleteAll();
@@ -67,8 +66,7 @@ public class RegisterUserITTests {
                .andExpect(jsonPath("$.username", is("Test User")))
                .andExpect(jsonPath("$.email", is("test.user@email.com")))
                .andExpect(jsonPath("$.token.token", is(notNullValue())))
-               .andExpect(jsonPath("$.token.valid_until", is(CustomMatchers.IsDaysFromNowMatcher(29L))))
-               .andDo(print());
+               .andExpect(jsonPath("$.token.valid_until", is(CustomMatchers.IsDaysFromNowMatcher(29L))));
         assertEquals(1L, securityTestsHelper.countUsers());
         assertEquals(1L, securityTestsHelper.countSecurityTokens());
     }
